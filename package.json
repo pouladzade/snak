@@ -14,5 +14,9 @@
     "@monax/legacy-db": "0.16.0",
     "@monax/legacy-contracts": "0.16.8",
     "shelljs": "0.8.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pouladzade/snack.git"
   }
 }
