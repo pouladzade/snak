@@ -8,6 +8,7 @@
   "preferGlobal": true,
   "bin": "./index.js",
   "dependencies": {
+    "promise": "8.0.1",
     "commander": "^2.9.0",
     "truffle-compile": "3.0.4",
     "truffle-resolver": "4.0.1",

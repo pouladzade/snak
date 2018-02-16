@@ -25,8 +25,8 @@ program
 program
   .command('compile')
   .alias('c')
-  .description('Compile all contracts in contracts folder \n and makes artifacts in the build folder\
-  \nyou need to initialize a project before using this command')
+  .description('Compile all contracts in contracts folder and makes artifacts in the build folder\
+  you need to initialize a project before using this command.\n\n')
   .action(() => {
     actions.compile();
   });
@@ -34,64 +34,70 @@ program
 program
   .command('init ')
   .alias('i')
-  .description('Initialize project')
+  .description('Initialize project, makes folders and files which are needed for starting a dapp project.\n\n')
   .action(() => actions.init());
 
-  program
+program
   .command('accounts ')
-  .alias('a')
+  .alias('ac')
   .description('Load all accounts\
-  \nyou need to initialize a project before using this command')
+  you need to initialize a project before using this command.\n\n')
   .action(() => actions.loadAccounts(config));
 
-  program
+program
   .command('migrate [accountname] ')
   .alias('m')
   .description('deploy contract on the Burrow\
-  \nyou need to initialize a project before using this command')
+  you need to initialize a project before using this command.\n\n')
   .action((accountname) => actions.migrate(config,accountname));
 
-  program
+program
   .command('transact <priv_key> <data> <address> <fee> <gas_limit>')
-  .alias('t')
+  .alias('tx')
   .description('Do regular transaction you need pass the private key of sender and address of reciever\
-  \nyou need to initialize a project before using this command')
+  you need to initialize a project before using this command.\n\n')
   .action((priv_key,data,address,fee,gas_limit) => actions.transact(config,priv_key,data,address,fee,gas_limit));
 
-  program
+program
   .command('random_transact <count>')
-  .alias('r')
+  .alias('rtx')
   .description("Doing random Transaction, \
-   \nyou need to initialize a project before using this command\n\
-  , \nand put a list of accounts in account_list folder first!.")
+  you need to initialize a project before using this command\
+  ,and put a list of accounts(name = account_list.json) in accounts folder first!.\n\n")
   .action((count) => actions.randomTransact(config,count));
 
-  program
-  .command('--install')
-  .alias('install')
-  .description('install burrow blockchain, \n and copy the files to the home directory (.burrow), \
-  \nNo need to initialize project for this command')
+program
+  .command('install')
+  .alias('ibur')
+  .description('install burrow blockchain, and copy the files to the home directory (.burrow), \
+  No need to initialize project for this command.\n\n')
   .action(() => actions.installBurrow());
 
-  program
-  .command('--uninstall')
-  .alias('uninstall')
-  .description('uninstall burrow blockchain, \n and back up the files to the home directory (burrow-backup), \
-  \nNo need to initialize project for this command')
+program
+  .command('uninstall')
+  .alias('unbur')
+  .description('uninstall burrow blockchain, and back up the files to the home directory (burrow-backup), \
+  No need to initialize project for this command.\n\n')
   .action(() => actions.uninstallBurrow());
 
-  program
-  .command('--burrow')
-  .alias('burrow')
-  .description('run burrow blockchain, \nyou need install burrow first!, \
-  \nNo need to initialize project for this command')
+program
+  .command('run-burrow')
+  .alias('rnbur')
+  .description('run burrow blockchain,you need install burrow first!, \
+  No need to initialize project for this command.\n\n')
   .action(() => actions.burrow());
 
-  program
-  .command('--clean')
-  .alias('clean-backup')
+program
+  .command('clean-backup')
+  .alias('clb')
   .description('This command will clean up the backup folder, \
-  \nNo need to initialize project for this command')
+  No need to initialize project for this command.\n\n')
   .action(() => actions.cleanBackup());
-  
+
+program
+  .command('*')
+  .action(function(others){
+    console.log('[Error] There isn\'t any command for "%s" \n\
+    please type snack -h for more helps.\n', others);  
+  });
 program.parse(process.argv);
