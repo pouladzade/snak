@@ -1,0 +1,331 @@
+{
+	"genesis_time": "2018-01-17T07:27:23.627Z",
+	"chain_id": "firstchain",
+	"params": {
+		"global_permissions": {
+			"base": {
+				"perms": 16383,
+				"set": 16383
+			},
+			"roles": []
+		}
+	},
+	"accounts": [
+		{
+			"address": "C43A1F81D8AB6C75B7A1916A95BED38A5EA5FFA8",
+			"amount": 9999999999,
+			"name": "firstchain_full_000",
+			"permissions": {
+				"base": {
+					"perms": 16383,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "B03DD2C47852775208A56FA10A49875ABC507343",
+			"amount": 9999999999,
+			"name": "firstchain_full_001",
+			"permissions": {
+				"base": {
+					"perms": 16383,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "89CB5A6C41AE7156BF493DD1FE934C8315FD0050",
+			"amount": 9999999999,
+			"name": "firstchain_full_002",
+			"permissions": {
+				"base": {
+					"perms": 16383,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "29D08ABFD2704F37D683AC019653B6CAE1A0F043",
+			"amount": 9999999999,
+			"name": "firstchain_full_003",
+			"permissions": {
+				"base": {
+					"perms": 16383,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "DC24F7BED106AF247B64BBAE7488598B29FC78FC",
+			"amount": 9999999999,
+			"name": "firstchain_full_004",
+			"permissions": {
+				"base": {
+					"perms": 16383,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "F886AFBC6E807A9EF44E00E6936510B450E77A56",
+			"amount": 9999999999,
+			"name": "firstchain_full_005",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "15B7926835A7C2FD6D297E3ADECC5B45F7309F59",
+			"amount": 9999999999,
+			"name": "firstchain_full_006",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "676CBB6F0C71031D0DD7C6A7FC4D838222ED83F2",
+			"amount": 9999999999,
+			"name": "firstchain_full_007",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "997D223A5CED2A0155566C9DFC48564A6D619C87",
+			"amount": 9999999999,
+			"name": "firstchain_full_008",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "F3FBB8C4F09CF5F60A3F50F5D30519C60678FA51",
+			"amount": 9999999999,
+			"name": "firstchain_full_009",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "624FF17C3C645CFAF4303CE2A46EDFC6CEED5EFE",
+			"amount": 9999999999,
+			"name": "firstchain_full_010",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "3EA699776522F42AF7A614FF8DD31B1ABF8999F3",
+			"amount": 9999999999,
+			"name": "firstchain_full_011",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "F0E166DB4F3A4AC547888CE043B21B5F14BBFD48",
+			"amount": 9999999999,
+			"name": "firstchain_full_012",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "77E24A77C015B5F99DC7A44A87DF021B48B02D6B",
+			"amount": 9999999999,
+			"name": "firstchain_full_013",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "87FACA9C2A9DAA718A67421502F614BB44A6F520",
+			"amount": 9999999999,
+			"name": "firstchain_full_014",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "4B1207BBB80CDE31C155CB3C5EABE9DBC3E0EAC2",
+			"amount": 9999999999,
+			"name": "firstchain_full_015",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "1CB5CF010E407AFC6249627BFD769D82D8DBBF71",
+			"amount": 9999999999,
+			"name": "firstchain_full_016",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "95AF87B1016850043D879C85F3263C83214F3544",
+			"amount": 9999999999,
+			"name": "firstchain_full_017",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "EE33BF343AC963BDF67E9A451AF4510FF541D1EE",
+			"amount": 9999999999,
+			"name": "firstchain_full_018",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "DA9BD94A350C14D7400CD9D9B7D0556C625511BB",
+			"amount": 9999999999,
+			"name": "firstchain_full_019",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "EA16E3A730EF5B916B2187BADEE44783E58F5763",
+			"amount": 9999999999,
+			"name": "firstchain_full_020",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "C429CE757AD1A3B87B3662F83411EE5786BC5C7C",
+			"amount": 9999999999,
+			"name": "firstchain_full_021",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "E2BA1221889FDC47DD8A1F6B9F1BFA5C6F87326F",
+			"amount": 9999999999,
+			"name": "firstchain_full_022",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "C4BA41501B0CAC3996BE7407D5E722A096705475",
+			"amount": 9999999999,
+			"name": "firstchain_full_023",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		},
+		{
+			"address": "F8496558F1672952B28A1A1384EC293870BD08D3",
+			"amount": 9999999999,
+			"name": "firstchain_full_024",
+			"permissions": {
+				"base": {
+					"perms": 2118,
+					"set": 16383
+				},
+				"roles": []
+			}
+		}
+	],
+	"validators": [
+		{
+			"pub_key": [
+				1,
+				"D95012A86CDD833A71C5AA2784F7E8A11020157AE831BA40956952717B3C9873"
+			],
+			"amount": 9999999999,
+			"name": "firstchain_full_000",
+			"unbond_to": [
+				{
+					"address": "C43A1F81D8AB6C75B7A1916A95BED38A5EA5FFA8",
+					"amount": 9999999999
+				}
+			]
+		}
+	]
+}
