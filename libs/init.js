@@ -39,13 +39,15 @@ var ProjectSchema = {
                 fs.copyFile(Schema.snack_path +Schema.template + Schema.config_file, Schema.project_path + Schema.config_file, (err) => {
                     if (err) throw err;
                 });
-
                 fs.mkdir(Schema.project_path + Schema.build,callback);
                 fs.mkdir(Schema.project_path + Schema.contracts,callback);
                 fs.mkdir(Schema.project_path + Schema.migration,callback);
                 fs.mkdir(Schema.project_path + Schema.test,callback);
                 fs.mkdir(Schema.project_path + Schema.accounts,callback);
                 fs.mkdir(Schema.project_path + Schema.transactions,callback);
+                fs.copyFile(Schema.snack_path +Schema.template + Schema.account_list, Schema.project_path + Schema.accounts + Schema.account_list, (err) => {
+                    if (err) throw err;
+                });
 
                 fulfil();
             }
