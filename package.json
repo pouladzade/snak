@@ -1,6 +1,6 @@
 {
-  "name": "snack",
-  "version": "1.0.0",
+  "name": "snak",
+  "version": "0.0.1",
   "description": "Tiny tools for interacting with Burrow",
   "main": "index.js",
   "author": "Ahmad Pouladzadeh",
@@ -8,13 +8,13 @@
   "preferGlobal": true,
   "bin": "./index.js",
   "dependencies": {
-    "promise": "8.0.1",
-    "commander": "^2.9.0",
-    "truffle-compile": "3.0.4",
-    "truffle-resolver": "4.0.1",
-    "@monax/legacy-db": "0.16.0",
     "@monax/legacy-contracts": "0.16.8",
-    "shelljs": "0.8.1"
+    "@monax/legacy-db": "0.16.0",
+    "commander": "^2.9.0",
+    "promise": "8.0.1",
+    "shelljs": "0.8.1",
+    "truffle-compile": "3.0.4",
+    "truffle-resolver": "4.0.1"
   },
   "repository": {
     "type": "git",
