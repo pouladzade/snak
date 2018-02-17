@@ -32,7 +32,7 @@ $ snak install
 ```
 ```
 * Uninstall Burrow
-First it make a backup of '$HOME/.burrow' and put it in the '$HOME/burrow-backup' folder, then will delete the '$HOME/.burrow' and 'usr/bin/burrow'
+First it makes a backup of '$HOME/.burrow' and puts that in the '$HOME/burrow-backup' folder, then will delete the '$HOME/.burrow' and 'usr/bin/burrow'
 
  $ snak uninstall
  
@@ -49,15 +49,10 @@ Run Burrow
  $ snak run-burrow
  
 ```
-For a default set of contracts and tests, run the following within an empty project directory:
-
-```
-$ snak init
-```
 
 ```
 Send random transaction
-$ snak rtx
+$ snak rtx <count>
 
 This command uses the pre-defined acounts to send the random amount transactions between these accounts! 
 ```
@@ -66,10 +61,24 @@ Send transaction
 $ snak transact <priv_key> <data> <address> <fee> <gas_limit>
 
 ```
+
+For a default set of contracts and tests, run the following within an empty project directory:
+
+```
+$ snak init
+```
+
 From there, you can run `snak compile`, `snak migrate` and `snak test`(will be implemented in future) to compile your contracts, deploy those contracts to the network, and run their associated unit tests.
 
-Be sure you launch the Burrow before running these commands.
+```
+$ snak compile
 
+$ snak migrate [accountname]
+
+[accountname] is optional, if you do not want to use default account you can save your account in a standard account json file in the accounts folder and name it 'account.json'.
+
+Be sure you launch the Burrow using `$snak run-burrow` or `$snak rnbur` and put all contracts on the contract folder before running these commands.
+```
 
 ### Contributing
 All contributions are welcome: use-cases, documentation, code, patches, bug reports, feature requests, etc. 
