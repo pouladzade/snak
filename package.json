@@ -8,6 +8,7 @@
   "preferGlobal": true,
   "bin": "./index.js",
   "dependencies": {
+    "md5": "2.2.1",
     "topological-sort":"0.1.5",
     "@monax/legacy-contracts": "0.16.8",
     "@monax/legacy-db": "0.16.0",
