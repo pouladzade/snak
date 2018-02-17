@@ -3,12 +3,6 @@
 var fs = require("fs");
 var promise = require("promise");
 
-var dirCallb = function (error,data){
-    if(error){
-        console.log(error);
-    }                
-}
-
 var Schema = {
     project_path : process.cwd(),
     snack_path : __dirname,
@@ -36,18 +30,14 @@ var ProjectSchema = {
                     reject(error);
             }
             try{
-                fs.copyFile(Schema.snack_path +Schema.template + Schema.config_file, Schema.project_path + Schema.config_file, (err) => {
-                    if (err) throw err;
-                });
-                fs.mkdir(Schema.project_path + Schema.build,callback);
-                fs.mkdir(Schema.project_path + Schema.contracts,callback);
-                fs.mkdir(Schema.project_path + Schema.migration,callback);
-                fs.mkdir(Schema.project_path + Schema.test,callback);
-                fs.mkdir(Schema.project_path + Schema.accounts,callback);
-                fs.mkdir(Schema.project_path + Schema.transactions,callback);
-                fs.copyFile(Schema.snack_path +Schema.template + Schema.account_list, Schema.project_path + Schema.accounts + Schema.account_list, (err) => {
-                    if (err) throw err;
-                });
+                fs.copyFileSync(Schema.snack_path +Schema.template + Schema.config_file, Schema.project_path + Schema.config_file);
+                fs.mkdirSync(Schema.project_path + Schema.build);
+                fs.mkdirSync(Schema.project_path + Schema.contracts);
+                fs.mkdirSync(Schema.project_path + Schema.migration);
+                fs.mkdirSync(Schema.project_path + Schema.test);
+                fs.mkdirSync(Schema.project_path + Schema.accounts);
+                fs.mkdirSync(Schema.project_path + Schema.transactions);
+                fs.copyFileSync(Schema.snack_path +Schema.template + Schema.account_list, Schema.project_path + Schema.accounts + Schema.account_list);
 
                 fulfil();
             }
