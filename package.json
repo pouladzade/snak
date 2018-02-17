@@ -1,6 +1,6 @@
 {
   "name": "snak",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Tiny tools for interacting with Burrow",
   "main": "index.js",
   "author": "Ahmad Pouladzadeh",
@@ -8,7 +8,7 @@
   "preferGlobal": true,
   "bin": "./index.js",
   "dependencies": {
-    "topological-sort":"0.1.5",
+    "topological-sort": "0.1.5",
     "@monax/legacy-contracts": "0.16.8",
     "@monax/legacy-db": "0.16.0",
     "commander": "^2.9.0",
