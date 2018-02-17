@@ -48,6 +48,7 @@ var ProjectSchema = {
                 fs.copyFile(Schema.snack_path +Schema.template + Schema.account_list, Schema.project_path + Schema.accounts + Schema.account_list, (err) => {
                     if (err) throw err;
                 });
+
                 fulfil();
             }
             catch(ex){
