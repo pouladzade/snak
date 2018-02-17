@@ -1,10 +1,12 @@
-![Snack](https://ibb.co/bWVvmS  "Snack")
+![Snack](https://thumb.ibb.co/bWVvmS/snack.png "Snack")
 
 -----------------------
 
-(This document has inspired by truffle readme.Md)
-#####Snack is an simple node.js app which already is under development, aiming to facilitate working with hyperledger Burrow without using Monax.
-####with snack you will have these facilities:
+This document has inspired by truffle README.md
+
+Snack is an simple node.js app which already is under development, aiming to facilitate working with hyperledger Burrow without using Monax.
+
+###with snack you will have these facilities:
 
 * Easily install and uninstall hyperledger burrow.
 * Built-in smart contract compilation, linking, deployment.
