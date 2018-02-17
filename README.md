@@ -6,7 +6,7 @@ This document has inspired by truffle README.md
 
 Snack is an simple node.js app which already is under development, aiming to facilitate working with hyperledger Burrow without using Monax.
 
-###with snack you will have these facilities:
+### with snack you will have these facilities:
 
 * Easily install and uninstall hyperledger burrow.
 * Built-in smart contract compilation, linking, deployment.
