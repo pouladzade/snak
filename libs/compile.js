@@ -49,6 +49,9 @@ function saveArtifacts (contracts,data)
     for(var i = 0 ; i < contracts.length ; i++) {
         try{
             var strData = JSON.stringify(data[contracts[i]],null,4);
+            if(!strData){
+                    console.log("can not find the contract with this name : " + contracts[i] + "\n Please check the contract name again!");                    
+            }
             var strFullName = compileOptions.contracts_build_directory;
             if (!fs.existsSync(strFullName)) {
                 fs.mkdirSync(strFullName);

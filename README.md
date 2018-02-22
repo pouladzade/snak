@@ -79,6 +79,8 @@ $ snak migrate [accountname]
 
 Be sure you launch the Burrow using `$snak run-burrow` or `$snak rnbur` and put all contracts on the contract folder before running these commands.
 ```
+### Video Tutorial
+https://www.youtube.com/watch?v=tq-M3c-fMCo&feature=youtu.be
 
 ### Contributing
 All contributions are welcome: use-cases, documentation, code, patches, bug reports, feature requests, etc. 
