@@ -31,15 +31,13 @@ var loadAccounts = (burrowURL)=>{
     accounts.getAccounts(showAccounts);
 }
 
-var createAccount = (burrowURL, pass_phrase)=>{
-
-    let burrow = burrowDbFactory.createInstance(burrowURL);
-    let accounts = burrow.accounts();
+var createAccount = (burrowURL, pass_phrase)=>{    
+    let burrow           = burrowDbFactory.createInstance(burrowURL);
+    let accounts         = burrow.accounts();
 
     accounts.genPrivAccount(pass_phrase, function (error, result) {
         if (!error) {
             console.log('Account : \n', JSON.stringify(result, null, 4));
-            createPipe(result);
         }
         else {
             console.log(error);

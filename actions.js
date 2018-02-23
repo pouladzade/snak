@@ -57,7 +57,7 @@ class Action {
 
     loadAccounts(config){
         try{
-            const loadAccounts = require("./libs/load_accounts").loadAccounts;
+            const loadAccounts = require("./libs/accounts").loadAccounts;
             loadAccounts(config.burrow_url);
         }
         catch(ex){
@@ -67,7 +67,7 @@ class Action {
 
     createAccount(config,pass_phrase){
         try{
-            const createAccount = require("./libs/load_accounts").createAccount;
+            const createAccount = require("./libs/accounts").createAccount;
             createAccount(config.burrow_url , pass_phrase);
         }
         catch(ex){

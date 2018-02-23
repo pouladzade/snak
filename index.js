@@ -113,7 +113,7 @@ program
 
   program
   .command('call <contract_name> <function_name> <parameters_list>')
-  .alias('call')
+  .alias('clf')
   .description("Calls the function of specefic contract, you need to pass the list of parameters like this var1,var2,...,varK ,comma separated, \
   You need to initialize a project before using this command.\n\n")
   .action((contract_name,function_name,parameters_list) => actions.callFunction(config,contract_name,function_name,parameters_list));
