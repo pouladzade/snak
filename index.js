@@ -8,11 +8,14 @@ var fs = require('fs');
 var config;
 
 try{
+  
   let config_path =  process.cwd() + "/config.json";
   if (fs.existsSync(config_path)) {
       let content = fs.readFileSync(config_path);
       config = JSON.parse(content);
   }
+
+
 }
 catch(ex){
   console.log(ex);
@@ -100,4 +103,20 @@ program
     console.log('[Error] There isn\'t any command for "%s" \n\
     please type snack -h for more helps.\n', others);  
   });
+
+  program
+  .command('create_account <pass_phrase>')
+  .alias('ca')
+  .description("Creates unsafe account included private key, public key and address and displays on the terminal, \
+  No need to initialize a project before using this command.\n\n")
+  .action((pass_phrase) => actions.createAccount(config,pass_phrase));
+
+  program
+  .command('call <contract_name> <function_name> <parameters_list>')
+  .alias('clf')
+  .description("Calls the function of specefic contract, you need to pass the list of parameters like this var1,var2,...,varK ,comma separated, \
+  You need to initialize a project before using this command.\n\n")
+  .action((contract_name,function_name,parameters_list) => actions.callFunction(config,contract_name,function_name,parameters_list));
+
+
 program.parse(process.argv);

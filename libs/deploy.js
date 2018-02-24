@@ -23,7 +23,7 @@ function deployCallb(error, contract){
             let str = JSON.stringify(contract,null,4);
             linkOrder[counter].byteCodeHash = byteCodeHash;
             linkOrder[counter].address = contract.address;
-            let log_file = fs.createWriteStream(project_path + schema.migration + schema.migration_output + linkOrder[counter].contractName, {flags : 'w'});
+            let log_file = fs.createWriteStream(project_path + schema.migration + schema.migration_output + linkOrder[counter].contractName + ".json", {flags : 'w'});
             log_file.write(str,'utf-8');
             log_file.close();
             console.log( 'Address : ' + contract.address + '\n'); 

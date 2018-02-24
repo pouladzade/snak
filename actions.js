@@ -54,10 +54,21 @@ class Action {
             console.log(ex);
         }
     }
+
     loadAccounts(config){
         try{
-            const load_accounts = require("./libs/load_accounts");
-            load_accounts(config.burrow_url);
+            const loadAccounts = require("./libs/accounts").loadAccounts;
+            loadAccounts(config.burrow_url);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
+    createAccount(config,pass_phrase){
+        try{
+            const createAccount = require("./libs/accounts").createAccount;
+            createAccount(config.burrow_url , pass_phrase);
         }
         catch(ex){
             console.log(ex);
@@ -146,6 +157,16 @@ class Action {
             console.log(ex);       
         }
     }
+
+    callFunction(config,contract_name,function_name,parameters_list){
+        let callFunc = require("./libs/functions").callFunction;
+        try{
+            callFunc(config.burrow_url,contract_name,function_name,parameters_list);
+        }
+        catch(ex){
+            console.log(ex);   
+        }
+    }
 };
 
-module.exports = Action;//{compile, migrate,randomTransact,transact,loadAccounts,init,burrow,installBurrow,uninstallBurrow };
+module.exports = Action;
