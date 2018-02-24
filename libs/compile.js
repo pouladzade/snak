@@ -30,7 +30,7 @@ var compileOptions =
  function callb(error,data){
     if(error){
         console.log("Error : Compile failed!");
-        console.log(erroe);
+        console.log(error);
     }
     else{
         console.log("Compile finished successfully!!!");
