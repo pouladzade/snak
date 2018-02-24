@@ -154,8 +154,6 @@ ahmad@blockchain:~/projects/calculator$ snak call Calculator Mul 12,10
 
 ```
 
-![Calculator](https://ibb.co/dMMcvx  "Calculator")
-
 ### Video Tutorial
 https://www.youtube.com/watch?v=tq-M3c-fMCo&feature=youtu.be
 
