@@ -57,9 +57,16 @@ program
 program
   .command('transact <priv_key> <data> <address> <fee> <gas_limit>')
   .alias('tx')
-  .description('Do regular transaction you need pass the private key of sender and address of reciever\
+  .description('Do regular transaction to a contract, you need pass the private key of sender and address of contract\
   you need to initialize a project before using this command.\n\n')
   .action((priv_key,data,address,fee,gas_limit) => actions.transact(config,priv_key,data,address,fee,gas_limit));
+
+  program
+  .command('send <priv_key> <data> <address> <fee> <gas_limit>')
+  .alias('sd')
+  .description('Do regular transaction, you need pass the private key of sender and address of reciever\
+  you need to initialize a project before using this command.\n\n')
+  .action((priv_key,address,fee) => actions.send(config,priv_key,address,fee));
 
 program
   .command('random_transact <count>')
@@ -118,5 +125,26 @@ program
   You need to initialize a project before using this command.\n\n")
   .action((contract_name,function_name,parameters_list) => actions.callFunction(config,contract_name,function_name,parameters_list));
 
+  program
+  .command('run_key_server')
+  .alias('rks')
+  .description("Runs the Monax key server on port 4776, \
+  No need to initialize a project before using this command.\n\n")
+  .action(() => actions.runMonaxKeys());
 
+  program
+  .command('import_keys <file_name>')
+  .alias('iks')
+  .description("Import keys in the monax key server\
+  No need to initialize a project before using this command.\n\n")
+  .action((file_name) => actions.importKeys(file_name));
+
+
+  program
+  .command('balance <address>')
+  .alias('blc')
+  .description("Get balance of a specefic account\
+  No need to initialize a project before using this command.\n\n")
+  .action((address) => actions.importKeys(config,address));
+  
 program.parse(process.argv);

@@ -37,13 +37,20 @@ module.exports = class Linker {
                 }                                  
                 let linkOrder = _this.makeDeploymentOrder(nodes,contractNames);                  
                 if(linkOrder) fulfil(linkOrder);
-                else throw new (" Error : can not create link order list!!!");                    
+                else 
+                {
+                    throw new (" Error : can not create link order list!!!");  
+                    reject(" Error : can not create link order list!!!");                  
+                }
             }
             catch(ex){
                 console.log(ex);
                 reject(ex);
             }
             
+        }).catch(err=>{
+            console.log(err);
+
         });
     });        
         

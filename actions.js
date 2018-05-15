@@ -28,7 +28,10 @@ class Action {
                 {
                     console.log(ex);
                 }    
-            });              
+            }).catch(err=>{
+                console.log(err);
+
+            });             
         }
         catch(ex){
             console.log(ex);
@@ -45,6 +48,15 @@ class Action {
         }
     }
 
+    send(config,priv_key,address,fee){
+        try{
+            const Send = require("./libs/transac").Send;
+            Send(config.burrow_url,priv_key,address,fee);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
     randomTransact(config,count){
         try{
             const randomTransact = require("./libs/transac").randomTransact;
@@ -69,6 +81,16 @@ class Action {
         try{
             const createAccount = require("./libs/accounts").createAccount;
             createAccount(config.burrow_url , pass_phrase);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
+    getBalance(config,address){
+        try{
+            const getBalance = require("./libs/accounts").getBalance;
+            getBalance(config.burrow_url , address);
         }
         catch(ex){
             console.log(ex);
@@ -165,6 +187,42 @@ class Action {
         }
         catch(ex){
             console.log(ex);   
+        }
+    }
+
+    runMonaxKeys(){
+        try{
+            let shell = require('shelljs');
+            let cmd = __dirname + '/burrow/monax-keys server &';
+            let child = shell.exec(cmd, {async:true});
+            child.stdout.on('data', function(data) {
+            });            
+        }
+        catch(ex){
+            console.log(ex);       
+        }
+    }
+
+    importKeys(file_name){
+        let fs = require('fs');
+        if (fs.existsSync(file_name)) {
+            let keys = JSON.parse(fs.readFileSync(file_name,'utf-8'));
+            keys.forEach(element => {
+                
+                try{
+                    let shell = require('shelljs');
+                    let cmd = __dirname + '/burrow/monax-keys import ' + element.privKey + ' --no-pass';
+                    let child = shell.exec(cmd, {async:true});
+                    child.stdout.on('data', function(data) {
+                    });            
+                }
+                catch(ex){
+                    console.log(ex);       
+                }
+            });
+        }
+        else{
+            console.log("Error : Couldn't find the file " + file_name);
         }
     }
 };

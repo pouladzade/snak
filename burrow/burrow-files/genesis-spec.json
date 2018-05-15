@@ -1,0 +1,22 @@
+{
+	"Accounts": [
+		{
+			"Amount": 99999999999999,
+			"AmountBonded": 9999999999,
+			"Name": "Full_0",
+			"Permissions": [
+				"all"
+			]
+		},
+		{
+			"Amount": 9999999999,
+			"Name": "Participant_0",
+			"Permissions": [
+				"send",
+				"call",
+				"name",
+				"hasRole"
+			]
+		}
+	]
+}
