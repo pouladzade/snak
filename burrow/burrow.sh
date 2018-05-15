@@ -13,5 +13,5 @@ function isRunning {
 }
 
 isRunning burrow
-#gnome-terminal --working-directory=$HOME --command 'burrow serve --work-dir $HOME/.burrow'
+#gnome-terminal --working-directory=$HOME --command '.$HOME/burrow/burrow serve burrow serve --validator-index=0'
 burrow serve --work-dir $HOME/.burrow

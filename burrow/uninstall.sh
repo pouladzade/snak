@@ -1,7 +1,7 @@
 #!/bin/bash
 #this script will uninstall burrow and corresponding files
-BURRUW_INSTALL_DIR=(/usr/bin/burrow)
-BURRUW_INSTALL_FILES_DIR=($HOME/.burrow)
+BURRUW_INSTALL_DIR=($HOME/burrow/burrow)
+BURRUW_INSTALL_FILES_DIR=($HOME/burrow)
 BURRUW_OLD_FILES=($HOME/burrow-backup)
 
 echo 
@@ -22,11 +22,11 @@ if [ -d "$BURRUW_INSTALL_FILES_DIR" ]; then
     NEW=$(date "+%Y.%m.%d-%H.%M.%S")
     mkdir $BURRUW_OLD_FILES/$NEW
     mv -v $BURRUW_INSTALL_FILES_DIR/* $BURRUW_OLD_FILES/$NEW
-    sudo rm -r $BURRUW_INSTALL_FILES_DIR
+    rm -r $BURRUW_INSTALL_FILES_DIR
 fi
 
 # remove burrow's binary
-sudo rm $BURRUW_INSTALL_DIR
+rm $BURRUW_INSTALL_DIR
 
 echo 
 echo
