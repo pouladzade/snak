@@ -1,10 +1,11 @@
 #!/bin/bash
 #this script will install burrow and their requirments for you
-BURRUW_INSTALL_DIR=($HOME/burrow/burrow)
+
 BURRUW_INSTALL_FILES_DIR=($HOME/burrow)
 BURRUW_OLD_FILES=($HOME/burrow-backup)
-BURRUW_FILES_DIR=($1) #(./burrow-files)
-BURROW_DIR=($2) #(./burrow)
+BURRUW_FILES_DIR=$1
+
+
 
 echo 
 echo copying burrow files....
@@ -28,8 +29,8 @@ fi
 
 # copying burrow's stuffs
 mkdir $BURRUW_INSTALL_FILES_DIR
-cp $BURROW_DIR $BURRUW_INSTALL_DIR
 cp -r $BURRUW_FILES_DIR/* $BURRUW_INSTALL_FILES_DIR/
 
 
+echo Finished!
 
