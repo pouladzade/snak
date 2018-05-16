@@ -54,8 +54,7 @@ var randomTransact = (burrowURL,count) =>{
 var Transact = (burrowURL,priv_key,data,address,fee,gas_limit) =>{ 
     try{
         if(!priv_key || !fee || !address ) throw ("Invalid arguments");
-
-        let accounts = JSON.parse(fs.readFileSync(path.join(current_path + schema.accounts + schema.account_list),'utf-8'));  
+        
         let burrow  = burrowDbFactory.createInstance(burrowURL);
         let trx = burrow.txs();  
         let context;    
@@ -69,8 +68,7 @@ var Transact = (burrowURL,priv_key,data,address,fee,gas_limit) =>{
 var Send = (burrowURL,priv_key,address,fee) =>{ 
     try{
         if(!priv_key || !fee || !address ) throw ("Invalid arguments");
-
-        let accounts = JSON.parse(fs.readFileSync(path.join(current_path + schema.accounts + schema.account_list),'utf-8'));  
+       
         let burrow  = burrowDbFactory.createInstance(burrowURL);
         let trx = burrow.txs();  
         let context;    

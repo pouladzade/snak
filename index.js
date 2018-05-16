@@ -12,7 +12,7 @@ try{
   let config_path =  process.cwd() + "/config.json";
   if (fs.existsSync(config_path)) {
       let content = fs.readFileSync(config_path);
-      config = JSON.parse(content);
+      config = JSON.parse(content);  
   }
 
 }
@@ -79,7 +79,7 @@ catch(ex){
   .alias('snd')
   .description('\nDo regular transaction, you need pass the private key of sender and address of reciever\
   \nyou need to initialize a project before using this command.\n\n')
-  .action((priv_key,address,fee) => actions.send(config,priv_key,address,fee));
+  .action((priv_key,address,fee) => actions.send(config,priv_key,address,parseInt(fee)));
 
   program
   .command('random_transact <count>')
