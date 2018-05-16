@@ -1,5 +1,5 @@
 
-var burrowDbFactory       = require('@monax/legacy-db');
+var burrowDbFactory       = require('burrow-db');
 var fs                    = require('fs');
 var path                  = require('path'); 
 var schema                = require('./init').Schema;

@@ -1,4 +1,4 @@
-var burrowDbFactory = require('@monax/legacy-db');
+var burrowDbFactory = require('burrow-db');
 var fs              = require('fs');
 var path            = require('path'); 
 var schema          = require('./init').Schema;
@@ -43,7 +43,7 @@ var randomTransact = (burrowURL,count) =>{
             let indexSender = randomInt(accounts.length,0);
             let indexReciever = randomInt(accounts.length,0);
             let context;
-            trx.transact(accounts[indexSender].privKey,accounts[indexReciever].address,"",randomInt(10000,1),randomInt(10,1),context,randomtransactCallb);
+            trx.send(accounts[indexSender].privKey,accounts[indexReciever].address,randomInt(10000,1),context,randomtransactCallb);
         } 
     }
     catch(ex){

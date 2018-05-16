@@ -1,7 +1,7 @@
 
 'use strict'
 
-let contracts = require('@monax/legacy-contracts');
+let contracts = require('burrow-contracts');
 const schema = require('./init').Schema;
 var projectSchema = require("./init").ProjectSchema;
 var fs = require('fs');
