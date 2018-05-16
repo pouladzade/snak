@@ -1,5 +1,8 @@
 
 'use strict'
+
+var os = require('os');
+
 class Action {
 
     compile(){
@@ -28,7 +31,10 @@ class Action {
                 {
                     console.log(ex);
                 }    
-            });              
+            }).catch(err=>{
+                console.log(err);
+
+            });             
         }
         catch(ex){
             console.log(ex);
@@ -45,6 +51,15 @@ class Action {
         }
     }
 
+    send(config,priv_key,address,fee){
+        try{
+            const Send = require("./libs/transac").Send;
+            Send(config.burrow_url,priv_key,address,fee);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
     randomTransact(config,count){
         try{
             const randomTransact = require("./libs/transac").randomTransact;
@@ -75,6 +90,16 @@ class Action {
         }
     }
 
+    getBalance(config,address){
+        try{
+            const getBalance = require("./libs/accounts").getBalance;
+            getBalance(config.burrow_url , address);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
     init(){
         try{
             const projectSchema = require("./libs/init.js").ProjectSchema;        
@@ -88,11 +113,10 @@ class Action {
     burrow(){
         try{
             let shell = require('shelljs');
-            let cmd ='bash ' +  __dirname + '/burrow/burrow.sh';
+            let cmd = __dirname + '/burrow/burrow.sh';
             let child = shell.exec(cmd, {async:true});
             child.stdout.on('data', function(data) {
-            /* ... do something with data ... */
-            });
+            });            
             
         }
         catch(ex){
@@ -101,25 +125,20 @@ class Action {
     }
 
     installBurrow(){
-        try{
-            let shell = require('shelljs');
-            let burrow_files = __dirname + '/burrow/burrow-files';
-            let burrow = __dirname + '/burrow/burrow';
-            let cmd ='bash ' + __dirname + '/burrow/install.sh ' + burrow_files + ' '+ burrow;
-            let child = shell.exec(cmd, {async:true});
-            child.stdout.on('data', function(data) { 
-            });
-            
-        }
-        catch(ex){
-            console.log(ex);       
-        }
-    }
 
-    uninstallBurrow(){
+        let burrow_files = "";        
+
+        if(os.type == "Linux")
+            burrow_files = '/burrow/burrow-linux';
+        else if (os.type == "Darwin")
+            burrow_files = '/burrow/burrow-darwin';              
+        else{
+            console.log("snak does not support your OS type: " + os.type);
+            return;
+        }
         try{
             let shell = require('shelljs');
-            let cmd ='bash ' + __dirname + '/burrow/uninstall.sh';
+            let cmd = __dirname + '/burrow/install.sh ' + __dirname + burrow_files;
             let child = shell.exec(cmd, {async:true});
             child.stdout.on('data', function(data) {
             });
@@ -133,21 +152,7 @@ class Action {
     uninstallBurrow(){
         try{
             let shell = require('shelljs');
-            let cmd ='bash ' + __dirname + '/burrow/uninstall.sh';
-            let child = shell.exec(cmd, {async:true});
-            child.stdout.on('data', function(data) {
-            });
-            
-        }
-        catch(ex){
-            console.log(ex);       
-        }
-    }
-
-    cleanBackup(){
-        try{
-            let shell = require('shelljs');
-            let cmd ='bash ' + __dirname + '/burrow/clean-backup.sh';
+            let cmd = __dirname + '/burrow/uninstall.sh';
             let child = shell.exec(cmd, {async:true});
             child.stdout.on('data', function(data) {
             });
@@ -165,6 +170,70 @@ class Action {
         }
         catch(ex){
             console.log(ex);   
+        }
+    }
+
+    runMonaxKeys(ip_address){
+
+        let burrow_files = "";        
+
+        if(os.type == "Linux")
+            burrow_files = '/burrow/burrow-linux';
+        else if (os.type == "Darwin")
+            burrow_files = '/burrow/burrow-darwin';              
+        else{
+            console.log("snak does not support your OS type: " + os.type);
+            return;
+        }
+        try{
+            let shell = require('shelljs');
+            let cmd = "";
+            if(ip_address == "")
+                cmd = __dirname + burrow_files + '/monax-keys server &';
+            else 
+                cmd = __dirname + burrow_files + '/monax-keys --host ' + ip_address + ' server &';   
+
+            let child = shell.exec(cmd, {async:true});
+            child.stdout.on('data', function(data) {
+            });            
+        }
+        catch(ex){
+            console.log(ex);       
+        }
+    }
+
+    importKeys(file_name){
+
+        let burrow_files = "";        
+
+        if(os.type == "Linux")
+            burrow_files = '/burrow/burrow-linux';
+        else if (os.type == "Darwin")
+            burrow_files = '/burrow/burrow-darwin';              
+        else{
+            console.log("snak does not support your OS type: " + os.type);
+            return;
+        }
+
+        let fs = require('fs');
+        if (fs.existsSync(file_name)) {
+            let keys = JSON.parse(fs.readFileSync(file_name,'utf-8'));
+            keys.forEach(element => {
+                
+                try{
+                    let shell = require('shelljs');
+                    let cmd = __dirname + burrow_files + '/monax-keys import ' + element.privKey + ' --no-pass';
+                    let child = shell.exec(cmd, {async:true});
+                    child.stdout.on('data', function(data) {
+                    });            
+                }
+                catch(ex){
+                    console.log(ex);       
+                }
+            });
+        }
+        else{
+            console.log("Error : Couldn't find the file " + file_name);
         }
     }
 };

@@ -40,6 +40,9 @@ var compileOptions =
                 console.log("Artifacts have been created successfully!!!");
             else
                 console.log("Error : can not create artifacts.");
+        }).catch(err=>{
+            console.log(err);
+
         });       
     }         
 }

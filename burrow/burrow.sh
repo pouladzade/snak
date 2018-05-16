@@ -13,5 +13,8 @@ function isRunning {
 }
 
 isRunning burrow
-#gnome-terminal --working-directory=$HOME --command 'burrow serve --work-dir $HOME/.burrow'
-burrow serve --work-dir $HOME/.burrow
+
+cd $HOME/burrow
+
+./monax-keys server &
+./burrow serve 
