@@ -1,7 +1,7 @@
 
 'use strict'
 
-let contracts = require('@monax/legacy-contracts');
+let contracts = require('burrow-contracts');
 const schema = require('./init').Schema;
 var projectSchema = require("./init").ProjectSchema;
 var fs = require('fs');
@@ -45,6 +45,9 @@ function getMigrateObj(contract_name, function_name) {
             catch (ex) {
                 console.log(ex);
             }
+        }).catch(err=>{
+            console.log(err);
+
         });
     });
 }
@@ -66,13 +69,15 @@ function callFunction(burrow_URL, contract_name, function_name, input) {
                 let contract_function = "contract." + function_name + "( " + input + ", methodCallBack " + " )";
 
                 var Func =new Function ("contract", "methodCallBack",contract_function);
-                
                 Func(contract,methodCallBack);
             });
         }
         catch (ex) {
             console.log(ex);
         }
+    }).catch(err=>{
+        console.log(err);
+
     });
 }
 
