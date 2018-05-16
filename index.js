@@ -65,7 +65,7 @@ catch(ex){
   .alias('blnc')
   .description("\nGet balance of a specefic account\
   \nNo need to initialize a project before using this command.\n\n")
-  .action((address) => actions.importKeys(config,address));
+  .action((address) => actions.getBalance(config,address));
 
   program
   .command('transact <priv_key> <data> <address> <fee> <gas_limit>')
