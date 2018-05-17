@@ -202,6 +202,57 @@ class Action {
         }
     }
 
+    getChainId(config){
+        try{
+            const getChainId = require("./libs/blockchain").getChainId;
+            getChainId(config.burrow_url);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+    
+    getGenesisHash(config){
+        try{
+            const getGenesisHash = require("./libs/blockchain").getGenesisHash;
+            getGenesisHash(config.burrow_url);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
+
+    getInfo(config){
+        try{
+            const getInfo = require("./libs/blockchain").getInfo;
+            getInfo(config.burrow_url);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
+    getLatestBlock(config){
+        try{
+            const getLatestBlock = require("./libs/blockchain").getLatestBlock;
+            getLatestBlock(config.burrow_url);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+    
+    getLatestBlockHeight(config){
+        try{
+            const getLatestBlockHeight = require("./libs/blockchain").getLatestBlockHeight;
+            getLatestBlockHeight(config.burrow_url);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
     importKeys(file_name){
 
         let burrow_files = "";        

@@ -12,7 +12,7 @@ try{
   let config_path =  process.cwd() + "/config.json";
   if (fs.existsSync(config_path)) {
       let content = fs.readFileSync(config_path);
-      config = JSON.parse(content);  
+      config = JSON.parse(content);        
   }
 
 }
@@ -137,6 +137,42 @@ catch(ex){
   .description("\nImport keys in the monax key server\
   \nNo need to initialize a project before using this command.\n\n")
   .action((file_name) => actions.importKeys(file_name));
+
+
+  program
+  .command('getChainId')
+  .alias('gchid')
+  .description("\nGet chain id of the blockchain\
+  \nYou need to initialize a project before using this command.\n\n")
+  .action(() => actions.getChainId(config));
+
+  program
+  .command('getGenesisHash')
+  .alias('genHash')
+  .description("\nGet Genesis Hash of the blockchain\
+  \nYou need to initialize a project before using this command.\n\n")
+  .action(() => actions.getGenesisHash(config));
+
+  program
+  .command('getLatestBlockHeight')
+  .alias('glbh')
+  .description("\nGet Latest Block Hash of the blockchain\
+  \nYou need to initialize a project before using this command.\n\n")
+  .action(() => actions.getLatestBlockHeight(config));
+
+  program
+  .command('getInfo')
+  .alias('gi')
+  .description("\nGet Info of the blockchain\
+  \nYou need to initialize a project before using this command.\n\n")
+  .action(() => actions.getInfo(config));
+
+  program
+  .command('getLatestBlock')
+  .alias('glb')
+  .description("\nGet Latest Block of the blockchain\
+  \nYou need to initialize a project before using this command.\n\n")
+  .action(() => actions.getLatestBlock(config));
 
 
 program.parse(process.argv);
