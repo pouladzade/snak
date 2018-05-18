@@ -1,13 +1,17 @@
-var burrowDbFactory = require('burrow-db');
+'use strict'
+
+
 var fs              = require('fs');
 var path            = require('path'); 
 var schema          = require('./init').Schema;
 var current_path    = schema.project_path;
 var trxNo = 0;
+
 module.exports = class Transaction{
 
     constructor(burrowURL){
         
+        let burrowDbFactory = require('burrow-db');
         let burrow  = burrowDbFactory.createInstance(burrowURL);
         this.trx    = burrow.txs();
     }

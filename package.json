@@ -1,6 +1,6 @@
 {
   "name": "snak",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Tiny tools for interacting with Burrow",
   "main": "index.js",
   "author": "Ahmad Pouladzadeh",
