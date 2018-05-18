@@ -1,10 +1,10 @@
 ![Snack](https://thumb.ibb.co/bWVvmS/snack.png "Snack")
 
 -----------------------
-
+Updated for Hyperledger Burrow v0.18.0
 This document has inspired by truffle README.md
 
-Snak is an simple node.js app which already is under development, aiming to facilitate working with hyperledger Burrow without using Monax.
+Snak is a node.js app which already is under development, aiming to facilitate working with hyperledger Burrow without using Monax.
 
 ### with snak you will have these facilities:
 
@@ -24,29 +24,27 @@ $ npm install -g snak
 ### Quick Usage
 ```
 Install Burrow
-(for now only Ubuntu 16.04 amd64 is supported)
-will copy Burrow necessary files in the '$HOME/.burrow' and the Burrow executable file in the '/usr/bin'
+(for now only Ubuntu 16.04 amd64 and Darwin are supported)
+will copy Burrow necessary files in the '$HOME/burrow' 
 
-$ snak install
-
+$ snak install_burrow
+This command will install hyperledger burrow on the $/HOME/burrow and by default use the http://localhost:1337/rpc.
+You can find a predefined accounts on this directory.
 ```
 ```
 Uninstall Burrow
-First it makes a backup of '$HOME/.burrow' and puts that in the '$HOME/burrow-backup' folder, then will delete the '$HOME/.burrow' and 'usr/bin/burrow'
+This command will delete the '$HOME/burrow'
 
- $ snak uninstall
- 
-```
-```
-Delete backub files
-
- $ snak clean-backup
+ $ snak uninstall_burrow
  
 ```
 ```
 Run Burrow
 
- $ snak run-burrow
+ $ snak run_burrow
+ This command at first run the Monax_keys on the default port and then will run the Burrow.
+ Please be sure that before running Burrow, import the keys  which already are located in the burrow installation directory.
+ $ snak import_keys $HOME/burrow/account_list.json
  
 ```
 
@@ -59,7 +57,7 @@ This command uses the pre-defined acounts to send the random amount transactions
 ```
 Send transaction
 
-$ snak transact <priv_key> <data> <address> <fee> <gas_limit>
+$ snak send <priv_key> <address> <fee> 
 
 ```
 
@@ -88,7 +86,7 @@ $ snak migrate [accountname]
 [accountname] is optional, if you do not want to use default account you can save your account in a standard account json file in the accounts folder and name it 'account.json'.
 
 ```
-Be sure you launch the Burrow using `$snak run-burrow` or `$snak rnbur` and put all contracts on the contract folder before running these commands.
+Be sure you launch the Burrow using `$snak run_burrow` and put all contracts on the contract folder before running these commands.
 
 ```
 Call smart contract's functions:
@@ -97,6 +95,126 @@ $ snak call <contract_name> <function_name> <parameters_list>
 
 The parameters are pretty clear the only thing you need to care is parameters_list, its formar must be like this:   var1,var2,...,varK (comma separated)
 
+```
+
+```
+  List of all commands:
+
+    -V, --version                                                output the version number
+    -h, --help                                                   output usage information
+
+  Commands:
+
+    init|int                                                     
+    Initialize project, makes folders and files which are needed for starting a dapp project.
+    
+    
+    compile|cmp                                                  
+    Compile all contracts in contracts folder and makes artifacts in the build folder  
+    you need to initialize a project before using this command.
+    
+    
+    migrate|mgt [accountname]                                    
+    deploy contract on the Burrow  
+    you need to initialize a project before using this command.
+    
+    
+    list_accounts|acnt                                           
+    Load all accounts  
+    you need to initialize a project before using this command.
+    
+    
+    default_accounts|acnt                                        
+    List all predefined accounts  
+    No need to initialize a project before using this command.
+    
+    
+    create_account|crtac <pass_phrase>                           
+    Creates unsafe account included private key, public key and address and displays on the terminal,   
+    No need to initialize a project before using this command.
+    
+    
+    balance|blnc <address>                                       
+    Get balance of a specefic account  
+    No need to initialize a project before using this command.
+    
+    
+    transact|tx <priv_key> <data> <address> <fee> <gas_limit>    
+    Do regular transaction to a contract, you need pass the private key of sender and address of contract  
+    you need to initialize a project before using this command.
+    
+    
+    send|snd <priv_key> <address> <fee>                          
+    Do regular transaction, you need pass the private key of sender and address of reciever  
+    you need to initialize a project before using this command.
+    
+    
+    random_transact|rtx <count>                                  
+    Doing random Transaction,   
+    you need to initialize a project before using this command  
+    you should put a list of accounts(name = account_list.json) in accounts folder first!.
+    
+    
+    install_burrow|insl                                          
+    install burrow blockchain, and copy the files to the home directory (.burrow),   
+    No need to initialize project for this command.
+    
+    
+    uninstall_burrow|unsl                                        
+    uninstall burrow blockchain, and back up the files to the home directory (burrow-backup),   
+    No need to initialize project for this command.
+    
+    
+    run_burrow|rnbrw                                             
+    run burrow blockchain,you need install burrow first!,   
+    No need to initialize project for this command.
+    
+    
+    *
+    call|calf <contract_name> <function_name> <parameters_list>  
+    Calls the function of specefic contract, you need to pass the list of parameters like this var1,var2,...,varK ,comma    separated.  
+    You need to initialize a project before using this command.
+    
+    
+    run_monax_keys|rks [ip_address]                              
+    Runs the Monax key server on port 4776,   
+    No need to initialize a project before using this command.
+    
+    
+    import_keys|imks <file_name>                                 
+    Import keys in the monax key server  
+    No need to initialize a project before using this command.
+    
+    
+    chain_id|chid                                                
+    Get chain id of the blockchain  
+    You need to initialize a project before using this command.
+    
+    
+    genesis_hash|genhash                                         
+    Get Genesis Hash of the blockchain  
+    You need to initialize a project before using this command.
+    
+    
+    latest_block_height|lbckh                                    
+    Get Latest Block Hash of the blockchain  
+    You need to initialize a project before using this command.
+    
+    
+    info|inf                                                     
+    Get Info of the blockchain  
+    You need to initialize a project before using this command.
+    
+    
+    latest_block|lbck                                            
+    Get Latest Block of the blockchain  
+    You need to initialize a project before using this command.
+    
+    
+    config|conf                                                  
+    Get the current config of the snak  
+    If you haven't created any project burrow url will be http://127.0.0.1:1337/rpc by default  
+    You may need to initialize a project before using this command.
 ```
 
 ### Example :
@@ -129,7 +247,6 @@ contract Calculator {
 
 }
 
-
 ```
 ```
 ahmad@blockchain:~/projects/calculator$ snak compile
@@ -160,9 +277,6 @@ ahmad@blockchain:~/projects/calculator$ snak call Calculator Mul 12,10
 "120"
 
 ```
-
-### Video Tutorial
-https://www.youtube.com/watch?v=tq-M3c-fMCo&feature=youtu.be
 
 ### Contributing
 All contributions are welcome: use-cases, documentation, code, patches, bug reports, feature requests, etc. 
