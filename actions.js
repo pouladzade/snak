@@ -25,6 +25,15 @@ class Action {
 
     }    
 
+    getConfig(){        
+        try{            
+            console.log(JSON.stringify(this.Config,null,4));            
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
     compile(){
         try{
             

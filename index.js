@@ -146,7 +146,6 @@ catch(ex){
   \nNo need to initialize a project before using this command.\n\n")
   .action((file_name) => actions.importKeys(file_name));
 
-
   program
   .command('chain_id')
   .alias('chid')
@@ -181,6 +180,14 @@ catch(ex){
   .description("\nGet Latest Block of the blockchain\
   \nYou need to initialize a project before using this command.\n\n")
   .action(() => actions.getLatestBlock());
+
+  program
+  .command('config')
+  .alias('conf')
+  .description("\nGet the current config of the snak\
+  \nIf you haven't created any project burrow url will be http://127.0.0.1:1337/rpc by default\
+  \nYou may need to initialize a project before using this command.\n\n")
+  .action(() => actions.getConfig());
 
 
 program.parse(process.argv);
