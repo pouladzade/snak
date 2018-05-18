@@ -58,4 +58,11 @@ var getBalance = (burrowURL, address)=>{
         }
     });
 }
-module.exports = {loadAccounts,createAccount,getBalance};
+
+var getDefaultAccounts = () => {
+    let account_list = JSON.parse(fs.readFileSync(__dirname + schema.template + schema.account_list, 'utf-8'));
+    let str = JSON.stringify(account_list,null,4);
+    console.log(str);
+}
+
+module.exports = {loadAccounts,createAccount,getBalance,getDefaultAccounts};

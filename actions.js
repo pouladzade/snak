@@ -5,6 +5,26 @@ var os = require('os');
 
 class Action {
 
+    constructor(config){
+
+        if(config == undefined){
+            this.Config = {
+                config_name:"config.json",
+                burrow_url:"http://localhost:1337/rpc",
+                burrow_path:"$HOME/burrow"
+            }
+        }
+        else
+            this.Config = config;
+
+        let Blockchain = require("./libs/blockchain");
+        this.blockchain = new Blockchain(this.Config.burrow_url);
+
+        let Transaction = require("./libs/transaction");
+        this.transaction = new Transaction(this.Config.burrow_url);
+
+    }    
+
     compile(){
         try{
             
@@ -41,29 +61,26 @@ class Action {
         }
     }
     
-    transact(config,priv_key,data,address,fee,gas_limit){
-        try{
-            const Transact = require("./libs/transac").Transact;
-            Transact(config.burrow_url,priv_key,data,address,fee,gas_limit);
+    transact(priv_key,data,address,fee,gas_limit){
+        try{            
+            this.transaction.Transact(priv_key,data,address,fee,gas_limit);
         }
         catch(ex){
             console.log(ex);
         }
     }
 
-    send(config,priv_key,address,fee){
-        try{
-            const Send = require("./libs/transac").Send;
-            Send(config.burrow_url,priv_key,address,fee);
+    send(priv_key,address,fee){
+        try{            
+            this.transaction.Send(priv_key,address,fee);
         }
         catch(ex){
             console.log(ex);
         }
     }
-    randomTransact(config,count){
-        try{
-            const randomTransact = require("./libs/transac").randomTransact;
-            randomTransact(config.burrow_url,count);
+    randomTransact(count){
+        try{            
+            this.transaction.randomTransact(count);
         }
         catch(ex){
             console.log(ex);
@@ -74,6 +91,16 @@ class Action {
         try{
             const loadAccounts = require("./libs/accounts").loadAccounts;
             loadAccounts(config.burrow_url);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
+    getDefaultAccounts(){
+        try{
+            const getDefaultAccounts = require("./libs/accounts").getDefaultAccounts;
+            getDefaultAccounts();
         }
         catch(ex){
             console.log(ex);
@@ -202,20 +229,18 @@ class Action {
         }
     }
 
-    getChainId(config){
-        try{
-            const getChainId = require("./libs/blockchain").getChainId;
-            getChainId(config.burrow_url);
+    getChainId(){
+        try{            
+            this.blockchain.getChainId();
         }
         catch(ex){
             console.log(ex);
         }
     }
     
-    getGenesisHash(config){
+    getGenesisHash(){
         try{
-            const getGenesisHash = require("./libs/blockchain").getGenesisHash;
-            getGenesisHash(config.burrow_url);
+            this.blockchain.getGenesisHash();
         }
         catch(ex){
             console.log(ex);
@@ -223,30 +248,27 @@ class Action {
     }
 
 
-    getInfo(config){
-        try{
-            const getInfo = require("./libs/blockchain").getInfo;
-            getInfo(config.burrow_url);
+    getInfo(){
+        try{            
+            this.blockchain.getInfo();
         }
         catch(ex){
             console.log(ex);
         }
     }
 
-    getLatestBlock(config){
-        try{
-            const getLatestBlock = require("./libs/blockchain").getLatestBlock;
-            getLatestBlock(config.burrow_url);
+    getLatestBlock(){
+        try{            
+            this.blockchain.getLatestBlock();
         }
         catch(ex){
             console.log(ex);
         }
     }
     
-    getLatestBlockHeight(config){
-        try{
-            const getLatestBlockHeight = require("./libs/blockchain").getLatestBlockHeight;
-            getLatestBlockHeight(config.burrow_url);
+    getLatestBlockHeight(){
+        try{            
+            this.blockchain.getLatestBlockHeight();
         }
         catch(ex){
             console.log(ex);
@@ -290,3 +312,4 @@ class Action {
 };
 
 module.exports = Action;
+

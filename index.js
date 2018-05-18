@@ -2,7 +2,7 @@
 'use strict'
 const program = require('commander');
 var Actions = require('./actions');
-var actions = new Actions;
+
 var fs = require('fs');
 
 var config;
@@ -13,12 +13,13 @@ try{
   if (fs.existsSync(config_path)) {
       let content = fs.readFileSync(config_path);
       config = JSON.parse(content);        
-  }
-
+  }  
 }
 catch(ex){
   console.log(ex);
 }
+
+  var actions = new Actions(config);
 
   program
   .version('0.0.1')
@@ -54,6 +55,13 @@ catch(ex){
   .action(() => actions.loadAccounts(config));
 
   program
+  .command('default_accounts ')
+  .alias('acnt')
+  .description('\nList all predefined accounts\
+  \nNo need to initialize a project before using this command.\n\n')
+  .action(() => actions.getDefaultAccounts(config));
+
+  program
   .command('create_account <pass_phrase>')
   .alias('crtac')
   .description("\nCreates unsafe account included private key, public key and address and displays on the terminal, \
@@ -61,7 +69,7 @@ catch(ex){
   .action((pass_phrase) => actions.createAccount(config,pass_phrase));
 
   program
-  .command('get_balance <address>')
+  .command('balance <address>')
   .alias('blnc')
   .description("\nGet balance of a specefic account\
   \nNo need to initialize a project before using this command.\n\n")
@@ -72,14 +80,14 @@ catch(ex){
   .alias('tx')
   .description('\nDo regular transaction to a contract, you need pass the private key of sender and address of contract\
   \nyou need to initialize a project before using this command.\n\n')
-  .action((priv_key,data,address,fee,gas_limit) => actions.transact(config,priv_key,data,address,fee,gas_limit));
+  .action((priv_key,data,address,fee,gas_limit) => actions.transact(priv_key,data,address,fee,gas_limit));
 
   program
   .command('send <priv_key> <address> <fee> ')
   .alias('snd')
   .description('\nDo regular transaction, you need pass the private key of sender and address of reciever\
   \nyou need to initialize a project before using this command.\n\n')
-  .action((priv_key,address,fee) => actions.send(config,priv_key,address,parseInt(fee)));
+  .action((priv_key,address,fee) => actions.send(priv_key,address,parseInt(fee)));
 
   program
   .command('random_transact <count>')
@@ -87,7 +95,7 @@ catch(ex){
   .description("\nDoing random Transaction, \
   \nyou need to initialize a project before using this command\
   \nyou should put a list of accounts(name = account_list.json) in accounts folder first!.\n\n")
-  .action((count) => actions.randomTransact(config,count));
+  .action((count) => actions.randomTransact(count));
 
   program
   .command('install_burrow')
@@ -140,39 +148,39 @@ catch(ex){
 
 
   program
-  .command('getChainId')
-  .alias('gchid')
+  .command('chain_id')
+  .alias('chid')
   .description("\nGet chain id of the blockchain\
   \nYou need to initialize a project before using this command.\n\n")
-  .action(() => actions.getChainId(config));
+  .action(() => actions.getChainId());
 
   program
-  .command('getGenesisHash')
-  .alias('genHash')
+  .command('genesis_hash')
+  .alias('genhash')
   .description("\nGet Genesis Hash of the blockchain\
   \nYou need to initialize a project before using this command.\n\n")
-  .action(() => actions.getGenesisHash(config));
+  .action(() => actions.getGenesisHash());
 
   program
-  .command('getLatestBlockHeight')
-  .alias('glbh')
+  .command('latest_block_height')
+  .alias('lbckh')
   .description("\nGet Latest Block Hash of the blockchain\
   \nYou need to initialize a project before using this command.\n\n")
-  .action(() => actions.getLatestBlockHeight(config));
+  .action(() => actions.getLatestBlockHeight());
 
   program
-  .command('getInfo')
-  .alias('gi')
+  .command('info')
+  .alias('inf')
   .description("\nGet Info of the blockchain\
   \nYou need to initialize a project before using this command.\n\n")
-  .action(() => actions.getInfo(config));
+  .action(() => actions.getInfo());
 
   program
-  .command('getLatestBlock')
-  .alias('glb')
+  .command('latest_block')
+  .alias('lbck')
   .description("\nGet Latest Block of the blockchain\
   \nYou need to initialize a project before using this command.\n\n")
-  .action(() => actions.getLatestBlock(config));
+  .action(() => actions.getLatestBlock());
 
 
 program.parse(process.argv);
