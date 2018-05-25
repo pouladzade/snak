@@ -51,10 +51,11 @@ class Action {
             let deployAll = require("./libs/deploy");    
             let Link = require("./libs/link");  
             let linker = new Link();   
+            let burrow_url = this.Config.burrow_url;
             linker.getDeployOrder().then(function(linkOrder){
                 let bytecode;            
                 try{
-                    deployAll(this.Config.burrow_url,linkOrder, accountname);               
+                    deployAll(burrow_url,linkOrder, accountname);               
                 }
                 catch(ex)
                 {
