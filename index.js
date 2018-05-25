@@ -25,6 +25,7 @@ catch(ex){
   .version('0.0.1')
   .description('Burrow deployment tools');
 
+
   program
   .command('init')
   .alias('int')
@@ -45,35 +46,35 @@ catch(ex){
   .alias('mgt')
   .description('\ndeploy contract on the Burrow\
   \nyou need to initialize a project before using this command.\n\n')
-  .action((accountname) => actions.migrate(config,accountname));
+  .action((accountname) => actions.migrate(accountname));
 
   program
   .command('list_accounts ')
-  .alias('acnt')
+  .alias('lacnt')
   .description('\nLoad all accounts\
   \nyou need to initialize a project before using this command.\n\n')
-  .action(() => actions.loadAccounts(config));
+  .action(() => actions.loadAccounts());
 
   program
   .command('default_accounts ')
-  .alias('acnt')
+  .alias('dacnt')
   .description('\nList all predefined accounts\
   \nNo need to initialize a project before using this command.\n\n')
-  .action(() => actions.getDefaultAccounts(config));
+  .action(() => actions.getDefaultAccounts());
 
   program
   .command('create_account <pass_phrase>')
   .alias('crtac')
   .description("\nCreates unsafe account included private key, public key and address and displays on the terminal, \
   \nNo need to initialize a project before using this command.\n\n")
-  .action((pass_phrase) => actions.createAccount(config,pass_phrase));
+  .action((pass_phrase) => actions.createAccount(pass_phrase));
 
   program
   .command('balance <address>')
   .alias('blnc')
   .description("\nGet balance of a specefic account\
   \nNo need to initialize a project before using this command.\n\n")
-  .action((address) => actions.getBalance(config,address));
+  .action((address) => actions.getBalance(address));
 
   program
   .command('transact <priv_key> <data> <address> <fee> <gas_limit>')
@@ -81,6 +82,20 @@ catch(ex){
   .description('\nDo regular transaction to a contract, you need pass the private key of sender and address of contract\
   \nyou need to initialize a project before using this command.\n\n')
   .action((priv_key,data,address,fee,gas_limit) => actions.transact(priv_key,data,address,fee,gas_limit));
+
+  program
+  .command('bond <priv_key> <address> <amount> <fee> <public_key>')
+  .alias('bnd')
+  .description('\nDo Bond transaction, you need pass the private key of sender and address of reciever\
+  \nyou may need to initialize a project before using this command.\n\n')
+  .action((priv_key,address,amount,fee,public_key) => actions.bond(priv_key,address,parseInt(amount),parseInt(fee),public_key));
+
+  program
+  .command('bond <priv_key> <address> <amount> <fee>')
+  .alias('bnd')
+  .description('\nDo Unbond transaction, you need pass the private key of sender and address of reciever\
+  \nyou may need to initialize a project before using this command.\n\n')
+  .action((priv_key,address,amount,fee,public_key) => actions.unbond(priv_key,address,parseInt(amount),parseInt(fee)));
 
   program
   .command('send <priv_key> <address> <fee> ')
@@ -130,7 +145,7 @@ catch(ex){
   .alias('calf')
   .description("\nCalls the function of specefic contract, you need to pass the list of parameters like this var1,var2,...,varK ,comma separated, \
   \nYou need to initialize a project before using this command.\n\n")
-  .action((contract_name,function_name,parameters_list) => actions.callFunction(config,contract_name,function_name,parameters_list));
+  .action((contract_name,function_name,parameters_list) => actions.callFunction(contract_name,function_name,parameters_list));
 
   program
   .command('run_monax_keys [ip_address]')
@@ -176,10 +191,17 @@ catch(ex){
 
   program
   .command('latest_block')
-  .alias('lbck')
+  .alias('lblck')
   .description("\nGet Latest Block of the blockchain\
-  \nYou need to initialize a project before using this command.\n\n")
+  \nYou may need to initialize a project before using this command.\n\n")
   .action(() => actions.getLatestBlock());
+
+  program
+  .command('block  <block_height>')
+  .alias('blck')
+  .description("\nGet the specific Block of the blockchain\
+  \nYou may need to initialize a project before using this command.\n\n")
+  .action((block_height) => actions.getBlock(parseInt(block_height)));
 
   program
   .command('config')
