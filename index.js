@@ -21,23 +21,6 @@ catch(ex){
 
   var actions = new Actions(config);
 
- actions.bond("96933A93A425AFB129F2ACC133D6F8F5456B4BE44CA9535FAD9C1A77B193926F9B818509CCBD5432ACBB063BC8B9183A0933E581B11567B9F4CD421374C6C4A0",
-"DC24F7BED106AF247B64BBAE7488598B29FC78FC",9999899888,10,"9B818509CCBD5432ACBB063BC8B9183A0933E581B11567B9F4CD421374C6C4A0");
-
-
-
-/*actions.unbond("9F63F7388E8076B8B451834537E936AD655C5492BB431163E1E8CA64B8075F5EF8D3133A55BA2B245B328D9EF4881B5CF2AFF2DC342EB8F51C4F98799E870683",
-"288289F4ACBEDF350CCC844EB847295125F742BB",100000,100);*/
-
-
-/*actions.send("9F63F7388E8076B8B451834537E936AD655C5492BB431163E1E8CA64B8075F5EF8D3133A55BA2B245B328D9EF4881B5CF2AFF2DC342EB8F51C4F98799E870683",
-"C3457524C600DED6E552ED488EF93BEEEDD85694",100000);*/
-
-//actions.getBalance("C3457524C600DED6E552ED488EF93BEEEDD85694");
-
-actions.getBalance("DC24F7BED106AF247B64BBAE7488598B29FC78FC");
-
-
   program
   .version('0.0.1')
   .description('Burrow deployment tools');
@@ -99,6 +82,20 @@ actions.getBalance("DC24F7BED106AF247B64BBAE7488598B29FC78FC");
   .description('\nDo regular transaction to a contract, you need pass the private key of sender and address of contract\
   \nyou need to initialize a project before using this command.\n\n')
   .action((priv_key,data,address,fee,gas_limit) => actions.transact(priv_key,data,address,fee,gas_limit));
+
+  program
+  .command('bond <priv_key> <address> <amount> <fee> <public_key>')
+  .alias('bnd')
+  .description('\nDo Bond transaction, you need pass the private key of sender and address of reciever\
+  \nyou may need to initialize a project before using this command.\n\n')
+  .action((priv_key,address,amount,fee,public_key) => actions.bond(priv_key,address,parseInt(amount),parseInt(fee),public_key));
+
+  program
+  .command('bond <priv_key> <address> <amount> <fee>')
+  .alias('bnd')
+  .description('\nDo Unbond transaction, you need pass the private key of sender and address of reciever\
+  \nyou may need to initialize a project before using this command.\n\n')
+  .action((priv_key,address,amount,fee,public_key) => actions.unbond(priv_key,address,parseInt(amount),parseInt(fee)));
 
   program
   .command('send <priv_key> <address> <fee> ')
