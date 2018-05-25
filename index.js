@@ -91,8 +91,8 @@ catch(ex){
   .action((priv_key,address,amount,fee,public_key) => actions.bond(priv_key,address,parseInt(amount),parseInt(fee),public_key));
 
   program
-  .command('bond <priv_key> <address> <amount> <fee>')
-  .alias('bnd')
+  .command('unbond <priv_key> <address> <amount> <fee>')
+  .alias('ubnd')
   .description('\nDo Unbond transaction, you need pass the private key of sender and address of reciever\
   \nyou may need to initialize a project before using this command.\n\n')
   .action((priv_key,address,amount,fee,public_key) => actions.unbond(priv_key,address,parseInt(amount),parseInt(fee)));
