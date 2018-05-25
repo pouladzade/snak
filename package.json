@@ -1,6 +1,6 @@
 {
   "name": "snak",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Tiny tools for interacting with Burrow",
   "main": "index.js",
   "author": "Ahmad Pouladzadeh",
@@ -10,12 +10,12 @@
   "dependencies": {
     "md5": "2.2.1",
     "topological-sort": "0.1.5",
-    "@monax/legacy-contracts": "0.16.8",
-    "@monax/legacy-db": "0.16.0",
+    "burrow-contracts": "0.16.9",
+    "burrow-db": "0.16.4",
     "commander": "^2.9.0",
     "promise": "8.0.1",
     "shelljs": "0.8.1",
-    "truffle-compile": "3.0.4",
+    "truffle-compile": "3.0.10",
     "truffle-resolver": "4.0.1"
   },
   "repository": {

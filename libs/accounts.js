@@ -1,5 +1,5 @@
 
-var burrowDbFactory       = require('@monax/legacy-db');
+var burrowDbFactory       = require('burrow-db');
 var fs                    = require('fs');
 var path                  = require('path'); 
 var schema                = require('./init').Schema;
@@ -9,7 +9,7 @@ function showAccounts(error,data){
     if(data){
         var str = JSON.stringify(data,null,4);
         saveAccounts(str);
-        console.log("account count = " + data.accounts.length) ;
+        console.log("account count = " + data.Accounts.length) ;
         console.log(str);
     }    
     else{
@@ -45,4 +45,24 @@ var createAccount = (burrowURL, pass_phrase)=>{
     });
 }
 
-module.exports = {loadAccounts,createAccount};
+var getBalance = (burrowURL, address)=>{    
+    let burrow           = burrowDbFactory.createInstance(burrowURL);
+    let accounts         = burrow.accounts();
+
+    accounts.getAccount(address, function (error, result) {
+        if (!error) {
+            console.log('Balance : ' + result.Account.Balance);
+        }
+        else {
+            console.log(error);
+        }
+    });
+}
+
+var getDefaultAccounts = () => {
+    let account_list = JSON.parse(fs.readFileSync(__dirname + schema.template + schema.account_list, 'utf-8'));
+    let str = JSON.stringify(account_list,null,4);
+    console.log(str);
+}
+
+module.exports = {loadAccounts,createAccount,getBalance,getDefaultAccounts};
