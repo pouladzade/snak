@@ -62,6 +62,10 @@ class Blockchain{
         this.blockChain.getLatestBlock(this.callBack);
     }
 
+    getBlock(height){
+        this.blockChain.getBlock(height , this.callBack);
+    }
+
 }
 
 
