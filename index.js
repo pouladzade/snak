@@ -21,9 +21,27 @@ catch(ex){
 
   var actions = new Actions(config);
 
+ actions.bond("96933A93A425AFB129F2ACC133D6F8F5456B4BE44CA9535FAD9C1A77B193926F9B818509CCBD5432ACBB063BC8B9183A0933E581B11567B9F4CD421374C6C4A0",
+"DC24F7BED106AF247B64BBAE7488598B29FC78FC",9999899888,10,"9B818509CCBD5432ACBB063BC8B9183A0933E581B11567B9F4CD421374C6C4A0");
+
+
+
+/*actions.unbond("9F63F7388E8076B8B451834537E936AD655C5492BB431163E1E8CA64B8075F5EF8D3133A55BA2B245B328D9EF4881B5CF2AFF2DC342EB8F51C4F98799E870683",
+"288289F4ACBEDF350CCC844EB847295125F742BB",100000,100);*/
+
+
+/*actions.send("9F63F7388E8076B8B451834537E936AD655C5492BB431163E1E8CA64B8075F5EF8D3133A55BA2B245B328D9EF4881B5CF2AFF2DC342EB8F51C4F98799E870683",
+"C3457524C600DED6E552ED488EF93BEEEDD85694",100000);*/
+
+//actions.getBalance("C3457524C600DED6E552ED488EF93BEEEDD85694");
+
+actions.getBalance("DC24F7BED106AF247B64BBAE7488598B29FC78FC");
+
+
   program
   .version('0.0.1')
   .description('Burrow deployment tools');
+
 
   program
   .command('init')
@@ -45,35 +63,35 @@ catch(ex){
   .alias('mgt')
   .description('\ndeploy contract on the Burrow\
   \nyou need to initialize a project before using this command.\n\n')
-  .action((accountname) => actions.migrate(config,accountname));
+  .action((accountname) => actions.migrate(accountname));
 
   program
   .command('list_accounts ')
-  .alias('acnt')
+  .alias('lacnt')
   .description('\nLoad all accounts\
   \nyou need to initialize a project before using this command.\n\n')
-  .action(() => actions.loadAccounts(config));
+  .action(() => actions.loadAccounts());
 
   program
   .command('default_accounts ')
-  .alias('acnt')
+  .alias('dacnt')
   .description('\nList all predefined accounts\
   \nNo need to initialize a project before using this command.\n\n')
-  .action(() => actions.getDefaultAccounts(config));
+  .action(() => actions.getDefaultAccounts());
 
   program
   .command('create_account <pass_phrase>')
   .alias('crtac')
   .description("\nCreates unsafe account included private key, public key and address and displays on the terminal, \
   \nNo need to initialize a project before using this command.\n\n")
-  .action((pass_phrase) => actions.createAccount(config,pass_phrase));
+  .action((pass_phrase) => actions.createAccount(pass_phrase));
 
   program
   .command('balance <address>')
   .alias('blnc')
   .description("\nGet balance of a specefic account\
   \nNo need to initialize a project before using this command.\n\n")
-  .action((address) => actions.getBalance(config,address));
+  .action((address) => actions.getBalance(address));
 
   program
   .command('transact <priv_key> <data> <address> <fee> <gas_limit>')
@@ -130,7 +148,7 @@ catch(ex){
   .alias('calf')
   .description("\nCalls the function of specefic contract, you need to pass the list of parameters like this var1,var2,...,varK ,comma separated, \
   \nYou need to initialize a project before using this command.\n\n")
-  .action((contract_name,function_name,parameters_list) => actions.callFunction(config,contract_name,function_name,parameters_list));
+  .action((contract_name,function_name,parameters_list) => actions.callFunction(contract_name,function_name,parameters_list));
 
   program
   .command('run_monax_keys [ip_address]')
@@ -176,10 +194,17 @@ catch(ex){
 
   program
   .command('latest_block')
-  .alias('lbck')
+  .alias('lblck')
   .description("\nGet Latest Block of the blockchain\
-  \nYou need to initialize a project before using this command.\n\n")
+  \nYou may need to initialize a project before using this command.\n\n")
   .action(() => actions.getLatestBlock());
+
+  program
+  .command('block  <block_height>')
+  .alias('blck')
+  .description("\nGet the specific Block of the blockchain\
+  \nYou may need to initialize a project before using this command.\n\n")
+  .action((block_height) => actions.getBlock(parseInt(block_height)));
 
   program
   .command('config')

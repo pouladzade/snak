@@ -87,6 +87,34 @@ module.exports = class Transaction{
         }
     }
 
+    Bond(priv_key,address,amount,fee,pubKey){ 
+        try{
+            if(!priv_key || !fee || !address ) throw ("Invalid arguments");
+           
+            let context;    
+            
+            this.trx.bond(priv_key,address,amount,fee,pubKey,context,this.transactCallb);
+           
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
+    Unbond(priv_key,address,amount,fee){ 
+        try{
+            if(!priv_key || !fee || !address ) throw ("Invalid arguments");
+           
+            let context;    
+            
+            this.trx.unbond(priv_key,address,amount,fee,context,this.transactCallb);
+           
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
 }
 
 

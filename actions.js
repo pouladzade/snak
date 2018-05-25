@@ -46,7 +46,7 @@ class Action {
         }
     }
 
-    migrate(config, accountname){
+    migrate( accountname){
         try{
             let deployAll = require("./libs/deploy");    
             let Link = require("./libs/link");  
@@ -54,7 +54,7 @@ class Action {
             linker.getDeployOrder().then(function(linkOrder){
                 let bytecode;            
                 try{
-                    deployAll(config.burrow_url,linkOrder, accountname);               
+                    deployAll(this.Config.burrow_url,linkOrder, accountname);               
                 }
                 catch(ex)
                 {
@@ -87,6 +87,25 @@ class Action {
             console.log(ex);
         }
     }
+
+    bond(priv_key,address,amount,fee,pubKey){
+        try{            
+            this.transaction.Bond(priv_key,address,amount,fee,pubKey);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
+    unbond(priv_key,address,amount,fee){
+        try{            
+            this.transaction.Unbond(priv_key,address,amount,fee);
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
     randomTransact(count){
         try{            
             this.transaction.randomTransact(count);
@@ -96,10 +115,10 @@ class Action {
         }
     }
 
-    loadAccounts(config){
+    loadAccounts(){
         try{
             const loadAccounts = require("./libs/accounts").loadAccounts;
-            loadAccounts(config.burrow_url);
+            loadAccounts(this.Config.burrow_url);
         }
         catch(ex){
             console.log(ex);
@@ -116,20 +135,20 @@ class Action {
         }
     }
 
-    createAccount(config,pass_phrase){
+    createAccount(pass_phrase){
         try{
             const createAccount = require("./libs/accounts").createAccount;
-            createAccount(config.burrow_url , pass_phrase);
+            createAccount(this.Config.burrow_url , pass_phrase);
         }
         catch(ex){
             console.log(ex);
         }
     }
 
-    getBalance(config,address){
+    getBalance(address){
         try{
             const getBalance = require("./libs/accounts").getBalance;
-            getBalance(config.burrow_url , address);
+            getBalance(this.Config.burrow_url , address);
         }
         catch(ex){
             console.log(ex);
@@ -199,10 +218,10 @@ class Action {
         }
     }
 
-    callFunction(config,contract_name,function_name,parameters_list){
+    callFunction(contract_name,function_name,parameters_list){
         let callFunc = require("./libs/functions").callFunction;
         try{
-            callFunc(config.burrow_url,contract_name,function_name,parameters_list);
+            callFunc(this.Config.burrow_url,contract_name,function_name,parameters_list);
         }
         catch(ex){
             console.log(ex);   
@@ -278,6 +297,15 @@ class Action {
     getLatestBlockHeight(){
         try{            
             this.blockchain.getLatestBlockHeight();
+        }
+        catch(ex){
+            console.log(ex);
+        }
+    }
+
+    getBlock(height){
+        try{            
+            this.blockchain.getBlock(height);
         }
         catch(ex){
             console.log(ex);
