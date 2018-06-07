@@ -1,6 +1,6 @@
 {
   "name": "snak",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "Tiny tools for interacting with Burrow",
   "main": "index.js",
   "author": "Ahmad Pouladzadeh",
@@ -16,7 +16,8 @@
     "promise": "8.0.1",
     "shelljs": "0.8.1",
     "truffle-compile": "3.0.10",
-    "truffle-resolver": "4.0.1"
+    "truffle-resolver": "4.0.1",
+    "tenderkeys": "0.0.1"
   },
   "repository": {
     "type": "git",
