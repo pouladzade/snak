@@ -2,7 +2,7 @@
 'use strict'
 const program = require('commander');
 var Actions = require('./actions');
-var actions = new Actions;
+
 var fs = require('fs');
 
 var config;
@@ -12,13 +12,40 @@ try{
   let config_path =  process.cwd() + "/config.json";
   if (fs.existsSync(config_path)) {
       let content = fs.readFileSync(config_path);
-      config = JSON.parse(content);  
-  }
-
+      config = JSON.parse(content);        
+  }  
 }
 catch(ex){
   console.log(ex);
 }
+
+var actions = new Actions(config);
+
+// actions.broadcastCall("C01E3035C40C2FF009791C36755848F77EA9FAD484E4A38A17355C72A2C5EDB81474C7654BD711B910F48561FCEC85BC5FAE01B1D209CDF6B60D10F141EC7D5B",1000,100,"");
+
+
+
+actions.transact("C01E3035C40C2FF009791C36755848F77EA9FAD484E4A38A17355C72A2C5EDB81474C7654BD711B910F48561FCEC85BC5FAE01B1D209CDF6B60D10F141EC7D5B",
+ "9888888888888888888888888888","D7572DA8389D0C3AA64FC8709CA853AFE24F4260",1000,10);
+
+
+ actions.send("C01E3035C40C2FF009791C36755848F77EA9FAD484E4A38A17355C72A2C5EDB81474C7654BD711B910F48561FCEC85BC5FAE01B1D209CDF6B60D10F141EC7D5B",
+ "15B7926835A7C2FD6D297E3ADECC5B45F7309F59",1000);
+/*
+var account = {
+  "address": "6AE5EF855FE4F3771D1B6D6B73E21065ED7670EC",
+  "pubKey": "1474C7654BD711B910F48561FCEC85BC5FAE01B1D209CDF6B60D10F141EC7D5B",
+  "privKey": "C01E3035C40C2FF009791C36755848F77EA9FAD484E4A38A17355C72A2C5EDB81474C7654BD711B910F48561FCEC85BC5FAE01B1D209CDF6B60D10F141EC7D5B"
+}
+
+{
+  "address": "15B7926835A7C2FD6D297E3ADECC5B45F7309F59",
+  "pubKey": "50D941ECE7CDD9E727C2117B4BBF2D06B9250AEFD865143140952FCE258C9A09",
+  "privKey": "73DD440F81BC3E73BD290D3FB334805C3C2C7D01F7A76C3D9138D751812F353350D941ECE7CDD9E727C2117B4BBF2D06B9250AEFD865143140952FCE258C9A09"
+}
+*/
+
+
 
   program
   .version('0.0.1')
@@ -35,59 +62,92 @@ catch(ex){
   .alias('cmp')
   .description('\nCompile all contracts in contracts folder and makes artifacts in the build folder\
   \nyou need to initialize a project before using this command.\n\n')
-  .action(() => {
-    actions.compile();
-  });
+  .action(() => actions.compileAll());
 
   program
   .command('migrate [accountname] ')
   .alias('mgt')
   .description('\ndeploy contract on the Burrow\
   \nyou need to initialize a project before using this command.\n\n')
-  .action((accountname) => actions.migrate(config,accountname));
+  .action((accountname) => actions.migrate(accountname));
 
   program
   .command('list_accounts ')
-  .alias('acnt')
+  .alias('lacnt')
   .description('\nLoad all accounts\
   \nyou need to initialize a project before using this command.\n\n')
-  .action(() => actions.loadAccounts(config));
+  .action(() => actions.loadAccounts());
+
+  program
+  .command('default_accounts ')
+  .alias('dacnt')
+  .description('\nList all predefined accounts\
+  \nNo need to initialize a project before using this command.\n\n')
+  .action(() => actions.getDefaultAccounts());
 
   program
   .command('create_account <pass_phrase>')
   .alias('crtac')
   .description("\nCreates unsafe account included private key, public key and address and displays on the terminal, \
   \nNo need to initialize a project before using this command.\n\n")
-  .action((pass_phrase) => actions.createAccount(config,pass_phrase));
+  .action((pass_phrase) => actions.createAccount(pass_phrase));
 
   program
-  .command('get_balance <address>')
+  .command('balance <address>')
   .alias('blnc')
   .description("\nGet balance of a specefic account\
   \nNo need to initialize a project before using this command.\n\n")
-  .action((address) => actions.getBalance(config,address));
+  .action((address) => actions.getBalance(address));
+
+  program
+  .command('sequence <address>')
+  .alias('blnc')
+  .description("\nGet sequence of a specefic account\
+  \nNo need to initialize a project before using this command.\n\n")
+  .action((address) => actions.getSequence(address));
 
   program
   .command('transact <priv_key> <data> <address> <fee> <gas_limit>')
   .alias('tx')
-  .description('\nDo regular transaction to a contract, you need pass the private key of sender and address of contract\
+  .description('\n(Unsafe!) Do regular transaction to a contract, you need pass the private key of sender and address of contract\
   \nyou need to initialize a project before using this command.\n\n')
-  .action((priv_key,data,address,fee,gas_limit) => actions.transact(config,priv_key,data,address,fee,gas_limit));
+  .action((priv_key,data,address,fee,gas_limit) => actions.transact(priv_key,data,address,fee,gas_limit));
 
   program
-  .command('send <priv_key> <address> <fee> ')
+  .command('bond <priv_key> <address> <amount> <fee> <public_key>')
+  .alias('bnd')
+  .description('\n(Unsafe!) Do Bond transaction, you need pass the private key of sender and address of reciever\
+  \nyou may need to initialize a project before using this command.\n\n')
+  .action((priv_key,address,amount,fee,public_key) => actions.bond(priv_key,address,parseInt(amount),parseInt(fee),public_key));
+
+  program
+  .command('unbond <priv_key> <address> <amount> <fee>')
+  .alias('ubnd')
+  .description('\n(Unsafe!) Do Unbond transaction, you need pass the private key of sender and address of reciever\
+  \nyou may need to initialize a project before using this command.\n\n')
+  .action((priv_key,address,amount,fee,public_key) => actions.unbond(priv_key,address,parseInt(amount),parseInt(fee)));
+
+  program
+  .command('send <priv_key> <address> <amount> ')
   .alias('snd')
-  .description('\nDo regular transaction, you need pass the private key of sender and address of reciever\
+  .description('\n(Unsafe!) Do regular transaction, you need pass the private key of sender and address of reciever\
   \nyou need to initialize a project before using this command.\n\n')
-  .action((priv_key,address,fee) => actions.send(config,priv_key,address,parseInt(fee)));
+  .action((priv_key,address,amount) => actions.send(priv_key,address,parseInt(amount)));
+
+  program
+  .command('broadcast_send <priv_key> <address> <amount> ')
+  .alias('snd')
+  .description('\n(safe) Do regular transaction, you need pass the private key of sender and address of reciever\
+  \nyou need to initialize a project before using this command.\n\n')
+  .action((priv_key,address,amount) => actions.send(priv_key,address,parseInt(amount)));
 
   program
   .command('random_transact <count>')
   .alias('rtx')
-  .description("\nDoing random Transaction, \
+  .description("\n(Unsafe!)Doing random Transaction, \
   \nyou need to initialize a project before using this command\
   \nyou should put a list of accounts(name = account_list.json) in accounts folder first!.\n\n")
-  .action((count) => actions.randomTransact(config,count));
+  .action((count) => actions.randomTransact(count));
 
   program
   .command('install_burrow')
@@ -122,7 +182,7 @@ catch(ex){
   .alias('calf')
   .description("\nCalls the function of specefic contract, you need to pass the list of parameters like this var1,var2,...,varK ,comma separated, \
   \nYou need to initialize a project before using this command.\n\n")
-  .action((contract_name,function_name,parameters_list) => actions.callFunction(config,contract_name,function_name,parameters_list));
+  .action((contract_name,function_name,parameters_list) => actions.callFunction(contract_name,function_name,parameters_list));
 
   program
   .command('run_monax_keys [ip_address]')
@@ -137,6 +197,56 @@ catch(ex){
   .description("\nImport keys in the monax key server\
   \nNo need to initialize a project before using this command.\n\n")
   .action((file_name) => actions.importKeys(file_name));
+
+  program
+  .command('chain_id')
+  .alias('chid')
+  .description("\nGet chain id of the blockchain\
+  \nYou need to initialize a project before using this command.\n\n")
+  .action(() => actions.getChainId());
+
+  program
+  .command('genesis_hash')
+  .alias('genhash')
+  .description("\nGet Genesis Hash of the blockchain\
+  \nYou need to initialize a project before using this command.\n\n")
+  .action(() => actions.getGenesisHash());
+
+  program
+  .command('latest_block_height')
+  .alias('lbckh')
+  .description("\nGet Latest Block Hash of the blockchain\
+  \nYou need to initialize a project before using this command.\n\n")
+  .action(() => actions.getLatestBlockHeight());
+
+  program
+  .command('info')
+  .alias('inf')
+  .description("\nGet Info of the blockchain\
+  \nYou need to initialize a project before using this command.\n\n")
+  .action(() => actions.getInfo());
+
+  program
+  .command('latest_block')
+  .alias('lblck')
+  .description("\nGet Latest Block of the blockchain\
+  \nYou may need to initialize a project before using this command.\n\n")
+  .action(() => actions.getLatestBlock());
+
+  program
+  .command('block  <block_height>')
+  .alias('blck')
+  .description("\nGet the specific Block of the blockchain\
+  \nYou may need to initialize a project before using this command.\n\n")
+  .action((block_height) => actions.getBlock(parseInt(block_height)));
+
+  program
+  .command('config')
+  .alias('conf')
+  .description("\nGet the current config of the snak\
+  \nIf you haven't created any project burrow url will be http://127.0.0.1:1337/rpc by default\
+  \nYou may need to initialize a project before using this command.\n\n")
+  .action(() => actions.getConfig());
 
 
 program.parse(process.argv);
