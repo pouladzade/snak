@@ -1,6 +1,8 @@
 
-/* this module will copy all the files of 
-a directory to another directory*/
+/* 
+This module will copy all the files of 
+a directory to another directory
+*/
 
 var copy = function(srcDir, dstDir) {
 	let fs = require('fs');
@@ -14,19 +16,17 @@ var copy = function(srcDir, dstDir) {
     list.forEach(function(file) {
         src = srcDir + '/' + file;
 		dst = dstDir + '/' + file;
-		console.log(src);
+		
         let stat = fs.statSync(src);
         if (stat && stat.isDirectory()) {
-			try {
-				console.log('creating dir: ' + dst);
+			try {				
 				fs.mkdirSync(dst);
 			} catch(e) {
 				console.log('directory already exists: ' + dst);
 			}
 			results = results.concat(copy(src, dst));
 		} else {
-			try {
-				console.log('copying file: ' + dst);
+			try {				
 				fs.writeFileSync(dst, fs.readFileSync(src));
 			} catch(e) {
 				console.log('couldn\'t copy file: ' + dst);
@@ -36,4 +36,5 @@ var copy = function(srcDir, dstDir) {
     });
     return results;
 }
+
 module.exports = copy;

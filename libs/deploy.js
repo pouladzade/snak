@@ -7,13 +7,13 @@ const schema    = require('./schema').Schema;
 var Linker      = require('./link');
 var md5         = require('md5');
 
-var Link        = new Linker();
-let project_path = schema.project_path; 
-let counter     = 0;
+var Link            = new Linker();
+let project_path    = schema.project_path; 
+let counter         = 0;
 let contractManager = null;
-let linkOrder = null;
-let byteCodeHash = "";
-let prevLinkOrder = null;
+let linkOrder       = null;
+let byteCodeHash    = "";
+let prevLinkOrder   = null;
 
 module.exports = class Deploy{
     constructor(connectionUrl){

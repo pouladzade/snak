@@ -1,11 +1,13 @@
 'use strict'
-var promise = require("promise");
-const TopologicalSort = require('topological-sort');
-const schema = require('./schema').Schema;
-var Project = require("./project");
-var fs = require('fs');
+
+var promise             = require("promise");
+const TopologicalSort   = require('topological-sort');
+const schema            = require('./schema').Schema;
+var Project             = require("./project");
+var fs                  = require('fs');
 
 let project = new Project();
+
 class LinkOrder {
 
     constructor(linkOrder,contractName, dependencies){

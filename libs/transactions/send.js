@@ -1,8 +1,9 @@
 'use strict'
 
-var Transaction = require('./transaction');
-var Accounts = require('../accounts');
-var Blockchain = require('../blockchain');
+var Transaction     = require('./transaction');
+var Accounts        = require('../accounts');
+var Blockchain      = require('../blockchain');
+const SEND_TX_TYPE  = 0x1;
 
 module.exports = class SendTx extends Transaction {
 
@@ -11,17 +12,18 @@ module.exports = class SendTx extends Transaction {
     }
   
     broadcast(privKey,address,amount){
-        let account = this.generateAccount(privKey);
+        let account  = this.generateAccount(privKey);
         let accounts = new Accounts(this.connectionUrl);
-        let _this = this;
+        let _this    = this;
 
         return accounts.getSequence(account.address).then(sequence => {            
             let blockchain = new Blockchain(_this.connectionUrl);
+
             return blockchain.getChainId().then(chainId => {
                 let sendSign = {
                     chain_id:chainId,
                     tx: [
-                    1,
+                    SEND_TX_TYPE,
                     {
                         inputs:
                         [
@@ -45,7 +47,7 @@ module.exports = class SendTx extends Transaction {
                 let signature = _this.sign(account.privKey,JSON.stringify(sendSign));
                         
                 let sendTx = [
-                    1,
+                    SEND_TX_TYPE,
                     {
                         inputs:
                         [
