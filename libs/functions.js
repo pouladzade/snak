@@ -1,9 +1,9 @@
 'use strict'
 
-let contracts = require('burrow-contracts');
-const schema = require('./schema').Schema;
-var fs = require('fs');
-var promise = require("promise");
+let contracts   = require('burrow-contracts');
+const schema    = require('./schema').Schema;
+var fs          = require('fs');
+var promise     = require("promise");
 
 module.exports = class Functions{
 

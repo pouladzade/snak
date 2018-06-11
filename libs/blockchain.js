@@ -1,8 +1,9 @@
 'use strict'
 
 var burrowDbFactory = require('burrow-db');
-var Promise = require('promise');
+var Promise         = require('promise');
 var blockChain;
+
 module.exports = class Blockchain{
 
     constructor(connectionUrl){
@@ -74,7 +75,8 @@ module.exports = class Blockchain{
                     reject(error);   
                 } 
             })
-        });        
+        });
+        
     }
 
     getBlock(height){        

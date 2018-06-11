@@ -6,6 +6,7 @@ var path            = require('path');
 var schema          = require('../schema').Schema;
 var Promise         = require('promise');
 var current_path    = schema.project_path;
+
 var trxNo = 0;
 var trx = null;
 
@@ -24,8 +25,8 @@ module.exports = class Unsafe{
 
     randomTransact(count, logger){
         try{
-            let log_file = fs.createWriteStream(current_path + schema.transactions + schema.random_transactions, {flags : 'w'});
-            log_file.close();
+            let logFile = fs.createWriteStream(current_path + schema.transactions + schema.random_transactions, {flags : 'w'});
+            logFile.close();
             let accounts = JSON.parse(fs.readFileSync(path.join(current_path + schema.accounts + schema.account_list),'utf-8'));  
             
             for(let i=0 ; i< count ; i++){        
@@ -53,10 +54,10 @@ module.exports = class Unsafe{
         }
     }
     
-    transact(priv_key,data,address,fee,gas_limit){ 
+    transact(privKey,data,address,fee,gas_limit){ 
         let context;
         return new Promise(function (resolve, reject) {
-            trx.transact(priv_key,address,data,fee,gas_limit,context,(error,data)=>{
+            trx.transact(privKey,address,data,fee,gas_limit,context,(error,data)=>{
                 if(data){                                               
                     resolve(data);
                 }    
@@ -67,10 +68,10 @@ module.exports = class Unsafe{
         });        
     }
     
-    send(priv_key,address,amount){              
+    send(privKey,address,amount){              
         let context;
         return new Promise(function (resolve, reject) {
-            trx.send(priv_key,address,amount,context,(error,data)=>{
+            trx.send(privKey,address,amount,context,(error,data)=>{
                 if(data){                                               
                     resolve(data);
                 }    
@@ -81,10 +82,10 @@ module.exports = class Unsafe{
         }); 
     }
 
-    bond(priv_key,address,amount,fee,pubKey){ 
+    bond(privKey,address,amount,fee,pubKey){ 
         let context;    
         return new Promise(function (resolve, reject) {
-            trx.bond(priv_key,address,amount,fee,pubKey,context,(error,data)=>{
+            trx.bond(privKey,address,amount,fee,pubKey,context,(error,data)=>{
                 if(data){                                               
                     resolve(data);
                 }    

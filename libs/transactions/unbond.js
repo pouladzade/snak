@@ -3,6 +3,7 @@
 var Transaction = require('./transaction');
 var Accounts    = require('../accounts');
 var Blockchain  = require('../blockchain');
+const UNBOND_TX_TYPE = 0x12;
 
  module.exports = class UnbondlTx extends Transaction {
 
@@ -10,87 +11,74 @@ var Blockchain  = require('../blockchain');
       super(connectionURL);
     }
 
-    /*
-    format of the account object
-        account =
-        {
-        "address": "",
-        "pubKey": "",
-        "privKey": ""
-        }
+  
+    broadcast(privKey,address,amount,fee){
 
-        type UnbondTx struct {
-        From TxInput  `json:"from_validator"`
-        To   TxOutput `json:"to_account"`
-        txHashMemoizer
-    }
-    */
-    broadcast(privKey,address,amount){
-        let account = this.generateAccount(privKey);
-        let accounts = new Accounts(this.connectionUrl);
-        let _this = this;
+    let account  = this.generateAccount(privKey);
+    let accounts = new Accounts(this.connectionUrl);
+    let _this    = this;
 
-        return accounts.getSequence(account.address).then(sequence => {            
-            let blockchain = new Blockchain(_this.connectionUrl);
-            return blockchain.getChainId().then(chainId => {
-                let callSign = {
-                    chain_id:chainId,
-                    tx: [
-                    1,
-                    {
-                        inputs:
-                        [
-                            { 
-                                address:account.address,//source address
-                                amount:amount,
-                                sequence:sequence,// sequence of the source account
-                            }
-                        ],
+    return accounts.getSequence(account.address).then(sequence => {            
+        let blockchain = new Blockchain(_this.connectionUrl);
         
-                        address:address, 
-                        gasLimit:gasLimit,
-                        fee:fee,    
-                        data:data
-                    }
+        return blockchain.getChainId().then(chainId => {
+            let unbondSign = {
+                chain_id:chainId,
+                tx: [
+                UNBOND_TX_TYPE,
+                {
+                    from:                    
+                    { 
+                        address:account.address,
+                        amount:amount,
+                        sequence:sequence + 2,
+                    },
+
+                    to:                    
+                    {
+                        address:address,
+                        amount:amount
+                    },
+                }
                 ]
-                };
-                
-                let signature = _this.sign(account.privKey,JSON.stringify(callSign));
-                        
-                let callTx = [
-                    1,
+            };
+            
+            let signature = _this.sign(account.privKey,JSON.stringify(unbondSign));
+                    
+            let unbondTx = [
+                UNBOND_TX_TYPE,
+                {
+                    from:                    
+                    { 
+                        address:account.address,
+                        amount:amount,
+                        sequence:sequence + 2,
+                        signature:[1,signature],
+                        public_key:[1,account.pubKey]
+                    },
+
+                    to:                    
                     {
-                        inputs:
-                        [
-                            { 
-                                address:account.address,
-                                amount:amount,
-                                sequence:sequence,
-                                signature:[1,signature],
-                                public_key:[1,account.pubKey]
-                            }
-                        ],
-        
-                        address:address, 
-                        gasLimit:gasLimit,
-                        fee:fee,    
-                        data:data
-                    }
-                ];
+                        address:address,
+                        amount:amount
+                    },
+                }
+            ];
 
-                return _this.broadcastTx(callTx).then(data => {                    
-                    return data;
-
-                }).catch(ex => {
-                    throw ex;                    
-                });
+            return _this.broadcastTx(unbondTx).then(data => {                    
+                return data;
 
             }).catch(ex => {
-                throw ex;             
+                throw ex;                    
             });
 
         }).catch(ex => {
-            throw ex;
+            throw ex;             
         });
+
+    }).catch(ex => {
+        throw ex;
+    });
+
     }
 }

@@ -16,6 +16,7 @@ module.exports = class Transaction {
 
     sign(privKey,tx){                
         
+        console.log(tx);
         let signature = this._tenderKeys.sign(privKey,tx);
 
         return signature.toString("hex");
@@ -31,15 +32,6 @@ module.exports = class Transaction {
     }
 
     generateAccount(privateKey) {
-
-        /* format of the account object
-        account =
-        {
-            "address": "",
-            "pubKey": "",
-            "privKey": ""
-        }*/
-
         let pubKey = this._tenderKeys.getPubKeyFromPrivKey(privateKey);
         let address = this._tenderKeys.getAddressFromPrivKey(privateKey);  
         

@@ -1,6 +1,6 @@
 'use strict'
 
-var fs = require("fs");
+var fs      = require("fs");
 var Promise = require("promise");
 var Schema  = require("./schema").Schema;
 

@@ -1,9 +1,8 @@
 
-var fs = require("fs");
-var path = require("path");
+var fs      = require("fs");
+var path    = require("path");
 var compile = require("truffle-compile");
-var assert = require("assert");
-var schema = require("./schema").Schema;
+var schema  = require("./schema").Schema;
 var Resolve = require("truffle-resolver");
 var Project = require('./project');
 

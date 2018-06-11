@@ -1,16 +1,15 @@
 
 'use strict'
 
-var os = require('os');
+var os     = require('os');
 var Logger = require('./libs/logger');
-var logger     = new Logger();
+var logger = new Logger();
 
 module.exports = class Action {
 
     constructor(config){
 
         if(config == undefined){
-
             this._Config = {
                 config_name:"config.json",
                 burrow_url:"http://localhost:1337/rpc",
@@ -25,6 +24,8 @@ module.exports = class Action {
         this._unsafeTx   = null;
         this._sendTx     = null;
         this._callTx     = null;
+        this._bondTx     = null;
+        this._unbondTx   = null;
         this._accounts   = null;
         this._compile    = null;
         this._project    = null;
@@ -61,6 +62,28 @@ module.exports = class Action {
             let CallTx = require("./libs/transactions/call");
             this._callTx = new CallTx(this._Config.burrow_url);
             return this._callTx;
+        }
+    } 
+
+    _bondTxHandler(){
+        if (this._bondTx != null){
+            return this._bondTx;
+        }
+        else{
+            let BondTx = require("./libs/transactions/bond");
+            this._bondTx = new BondTx(this._Config.burrow_url);
+            return this._bondTx;
+        }
+    } 
+
+    _unbondTxHandler(){
+        if (this._unbondTx != null){
+            return this._unbondTx;
+        }
+        else{
+            let UnbondTx = require("./libs/transactions/unbond");
+            this._unbondTx = new UnbondTx(this._Config.burrow_url);
+            return this._unbondTx;
         }
     } 
 
@@ -128,14 +151,14 @@ module.exports = class Action {
             this._functions = new Functions();
             return this._functions;
         }         
-    }   
+    }
 
     getConfig(){        
         try{            
-            console.log(JSON.stringify(this.Config,null,4));            
+            logger.console(JSON.stringify(this._Config,null,4));            
         }
         catch(ex){
-            console.log(ex);
+            logger.error(ex);
         }
     }
 
@@ -148,7 +171,7 @@ module.exports = class Action {
         }
     }
 
-    migrate( accountname){
+    migrate( accountName){
         try{             
             let Link = require("./libs/link");  
             let linker = new Link();   
@@ -156,7 +179,7 @@ module.exports = class Action {
             linker.getDeployOrder().then(function(linkOrder){
                 let bytecode;            
                 try{
-                    _this._deployHandler().deployAll(linkOrder, accountname);               
+                    _this._deployHandler().deployAll(linkOrder, accountName);               
                 }
                 catch(ex)
                 {
@@ -164,6 +187,7 @@ module.exports = class Action {
                 }    
             }).catch(err=>{
                 logger.error(err);
+
             });             
         }
         catch(ex){
@@ -171,40 +195,69 @@ module.exports = class Action {
         }
     }
     
-    transact(priv_key,data,address,fee,gas_limit){                 
-        this._unsafeTxHandler().transact(priv_key,data,address,fee,gas_limit).then(data => {
-            logger.console(JSON.stringify(data,null,4));
-        })
-        .catch(function(ex) {
-            logger.error(JSON.stringify(ex,null,4));           
-        });
+    transact(privateKey,data,address,fee,gasLimit,unsafe){   
+        if(unsafe === true){
+            this._unsafeTxHandler().transact(privateKey,data,address,fee,gasLimit).then(data => {
+                logger.console(JSON.stringify(data,null,4));
+            })
+            .catch(function(ex) {
+                logger.error(JSON.stringify(ex,null,4));           
+            });
+        }   
+        else{
+            this.broadcastCall(privateKey,data,address,fee,gasLimit);
+        }          
     }
 
-    send(priv_key,address,amount){        
-        this._unsafeTxHandler().send(priv_key,address,amount).then(data => {
-            logger.console(JSON.stringify(data,null,4));
-        })
-        .catch(function(ex) {
-            logger.error(JSON.stringify(ex,null,4));           
-        });
+    send(privateKey,address,amount,unsafe){   
+        if(unsafe === true){
+            this._unsafeTxHandler().send(privateKey,address,amount).then(data => {
+                logger.console(JSON.stringify(data,null,4));
+            })
+            .catch(function(ex) {
+                logger.error(JSON.stringify(ex,null,4));           
+            });
+        } 
+        else{
+            this.broadcastSend(privateKey,address,amount);
+        }    
     }
 
-    bond(priv_key,address,amount,fee,pubKey){                 
-        this._unsafeTxHandler().bond(priv_key,address,amount,fee,pubKey).then(data => {
-            logger.console(JSON.stringify(data,null,4));
-        })
-        .catch(function(ex) {
-            logger.error(JSON.stringify(ex,null,4));           
-        });
+    bond(privateKey,address,amount,fee,pubKey,unsafe){                 
+        if(unsafe === true){
+            this._unsafeTxHandler().bond(privateKey,address,amount,fee,pubKey).then(data => {
+                logger.console(JSON.stringify(data,null,4));
+            })
+            .catch(function(ex) {
+                logger.error(JSON.stringify(ex,null,4));           
+            });
+        } 
+        else{
+            this.broadcastBond(privateKey,address,amount,fee,pubKey);
+        } 
     }
 
-    unbond(priv_key,address,amount,fee){                  
-        this._unsafeTxHandler().unbond(priv_key,address,amount,fee).then(data => {
-            logger.console(JSON.stringify(data,null,4));
-        })
-        .catch(function(ex) {
-            logger.error(JSON.stringify(ex,null,4));           
-        });
+    unbond(privateKey,address,amount,fee,unsafe){                          
+        if(unsafe === true){
+            this._unsafeTxHandler().unbond(privateKey,address,amount,fee).then(data => {
+                logger.console(JSON.stringify(data,null,4));
+            })
+            .catch(function(ex) {
+                logger.error(JSON.stringify(ex,null,4));           
+            });
+        } 
+        else{
+            this.broadcastUnbond(privateKey,address,amount,fee);
+        } 
+    }
+
+    randomTransact(count){
+        try{            
+            this._unsafeTxHandler().randomTransact(count,logger);
+        }
+        catch(ex){
+            logger.error(ex);
+        }
     }
 
     loadAccounts(){
@@ -237,7 +290,8 @@ module.exports = class Action {
         });
     }
 
-    getBalance(address){
+    getBalance(address,cmd){
+        console.log(cmd);
         this._accountHandler().getBalance( address)
         .then(balance => {
             logger.console("Balance : " + balance);
@@ -319,7 +373,8 @@ module.exports = class Action {
         }
     }
 
-    callFunction(contract_name,function_name,parameters_list){     
+    callFunction(contract_name,function_name,parameters_list){
+        
         try{
             this._functionHandler().callFunction(this._Config.burrow_url,contract_name,function_name,parameters_list);
         }
@@ -418,6 +473,7 @@ module.exports = class Action {
     }
 
     importKeys(file_name){
+
         let burrow_files = "";        
 
         if(os.type == "Linux")
@@ -453,18 +509,33 @@ module.exports = class Action {
 
     broadcastSend(privKey,address,amount){                
         this._sendTxHandler().broadcast(privKey,address,amount).then(data =>{
-            logger.console("Transaction :\n" + JSON.stringify(data,null,4));
+            logger.console("Safe Send Tx result :\n" + JSON.stringify(data,null,4));
         }).catch(ex => {
             logger.error(ex);
         });
     }
 
-    broadcastCall(privKey,gasLimit,fee,data){                
-        this._callTxHandler().broadcast(privKey,gasLimit,fee,data).then(data =>{
-            logger.console("Transaction :\n" + JSON.stringify(data,null,4));
+    broadcastCall(privKey,address,gasLimit,fee,data){                
+        this._callTxHandler().broadcast(privKey,address,gasLimit,fee,data).then(data =>{
+            logger.console("Safe Transact Tx result :\n" + JSON.stringify(data,null,4));
+        }).catch(ex => {
+            logger.error(ex);
+        });
+    }
+
+    broadcastBond(privKey,address,amount,fee,pubKey){                
+        this._bondTxHandler().broadcast(privKey,address,amount,fee,pubKey).then(data =>{
+            logger.console("Safe Bond Tx result :\n" + JSON.stringify(data,null,4));
+        }).catch(ex => {
+            logger.error(ex);
+        });
+    }
+
+    broadcastUnbond(privKey,address,amount,fee){                
+        this._unbondTxHandler().broadcast(privKey,address,amount,fee).then(data =>{
+            logger.console("Safe Unbond Tx result :\n" + JSON.stringify(data,null,4));
         }).catch(ex => {
             logger.error(ex);
         });
     }
 };
-

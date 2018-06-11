@@ -21,10 +21,34 @@ catch(ex){
 
 var actions = new Actions(config);
 
+// actions.broadcastCall("C01E3035C40C2FF009791C36755848F77EA9FAD484E4A38A17355C72A2C5EDB81474C7654BD711B910F48561FCEC85BC5FAE01B1D209CDF6B60D10F141EC7D5B",1000,100,"");
+
+
+
+//actions.broadcastUnbond("C01E3035C40C2FF009791C36755848F77EA9FAD484E4A38A17355C72A2C5EDB81474C7654BD711B910F48561FCEC85BC5FAE01B1D209CDF6B60D10F141EC7D5B",
+//"6AE5EF855FE4F3771D1B6D6B73E21065ED7670EC",
+ //100000,10);
+
+ //actions.send("C01E3035C40C2FF009791C36755848F77EA9FAD484E4A38A17355C72A2C5EDB81474C7654BD711B910F48561FCEC85BC5FAE01B1D209CDF6B60D10F141EC7D5B",
+ //"15B7926835A7C2FD6D297E3ADECC5B45F7309F59",1000);
+/*
+var account = {
+  "address": "6AE5EF855FE4F3771D1B6D6B73E21065ED7670EC",
+  "pubKey": "1474C7654BD711B910F48561FCEC85BC5FAE01B1D209CDF6B60D10F141EC7D5B",
+  "privKey": "C01E3035C40C2FF009791C36755848F77EA9FAD484E4A38A17355C72A2C5EDB81474C7654BD711B910F48561FCEC85BC5FAE01B1D209CDF6B60D10F141EC7D5B"
+}
+
+{
+  "address": "15B7926835A7C2FD6D297E3ADECC5B45F7309F59",
+  "pubKey": "50D941ECE7CDD9E727C2117B4BBF2D06B9250AEFD865143140952FCE258C9A09",
+  "privKey": "73DD440F81BC3E73BD290D3FB334805C3C2C7D01F7A76C3D9138D751812F353350D941ECE7CDD9E727C2117B4BBF2D06B9250AEFD865143140952FCE258C9A09"
+}
+*/
+
+
   program
   .version('0.0.1')
   .description('Burrow deployment tools');
-
 
   program
   .command('init')
@@ -83,38 +107,35 @@ var actions = new Actions(config);
 
   program
   .command('transact <priv_key> <data> <address> <fee> <gas_limit>')
+  .option('-u, --unsafe', 'unsafe sending transaction')
   .alias('tx')
   .description('\n(Unsafe!) Do regular transaction to a contract, you need pass the private key of sender and address of contract\
   \nyou need to initialize a project before using this command.\n\n')
-  .action((priv_key,data,address,fee,gas_limit) => actions.transact(priv_key,data,address,fee,gas_limit));
+  .action((priv_key,data,address,fee,gas_limit,cmd) => actions.transact(priv_key,data,address,fee,gas_limit,cmd.unsafe));
 
   program
   .command('bond <priv_key> <address> <amount> <fee> <public_key>')
+  .option('-u, --unsafe', 'unsafe sending transaction')
   .alias('bnd')
-  .description('\n(Unsafe!) Do Bond transaction, you need pass the private key of sender and address of reciever\
+  .description('\n(safe) Do Bond transaction, you need pass the private key of sender and address of reciever\
   \nyou may need to initialize a project before using this command.\n\n')
-  .action((priv_key,address,amount,fee,public_key) => actions.bond(priv_key,address,parseInt(amount),parseInt(fee),public_key));
+  .action((priv_key,address,amount,fee,public_key,cmd) => actions.broadcastBond(priv_key,address,parseInt(amount),parseInt(fee),public_key,cmd.unsafe));
 
   program
   .command('unbond <priv_key> <address> <amount> <fee>')
+  .option('-u, --unsafe', 'unsafe sending transaction')
   .alias('ubnd')
-  .description('\n(Unsafe!) Do Unbond transaction, you need pass the private key of sender and address of reciever\
+  .description('\n(safe) Do Unbond transaction, you need pass the private key of sender and address of reciever\
   \nyou may need to initialize a project before using this command.\n\n')
-  .action((priv_key,address,amount,fee,public_key) => actions.unbond(priv_key,address,parseInt(amount),parseInt(fee)));
+  .action((priv_key,address,amount,fee,cmd) => actions.broadcastUnbond(priv_key,address,parseInt(amount),parseInt(fee),cmd.unsafe));
 
   program
   .command('send <priv_key> <address> <amount> ')
-  .alias('snd')
-  .description('\n(Unsafe!) Do regular transaction, you need pass the private key of sender and address of reciever\
-  \nyou need to initialize a project before using this command.\n\n')
-  .action((priv_key,address,amount) => actions.send(priv_key,address,parseInt(amount)));
-
-  program
-  .command('broadcast_send <priv_key> <address> <amount> ')
+  .option('-u, --unsafe', 'unsafe sending transaction')
   .alias('snd')
   .description('\n(safe) Do regular transaction, you need pass the private key of sender and address of reciever\
   \nyou need to initialize a project before using this command.\n\n')
-  .action((priv_key,address,amount) => actions.send(priv_key,address,parseInt(amount)));
+  .action((priv_key,address,amount,cmd) => actions.send(priv_key,address,parseInt(amount),cmd.unsafe));
 
   program
   .command('random_transact <count>')
