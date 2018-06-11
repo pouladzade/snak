@@ -74,8 +74,7 @@ module.exports = class Blockchain{
                     reject(error);   
                 } 
             })
-        });
-        
+        });        
     }
 
     getBlock(height){        

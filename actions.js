@@ -10,6 +10,7 @@ module.exports = class Action {
     constructor(config){
 
         if(config == undefined){
+
             this._Config = {
                 config_name:"config.json",
                 burrow_url:"http://localhost:1337/rpc",
@@ -127,14 +128,14 @@ module.exports = class Action {
             this._functions = new Functions();
             return this._functions;
         }         
-    }
+    }   
 
     getConfig(){        
         try{            
-            logger.console(JSON.stringify(this._Config,null,4));            
+            console.log(JSON.stringify(this.Config,null,4));            
         }
         catch(ex){
-            logger.error(ex);
+            console.log(ex);
         }
     }
 
@@ -163,7 +164,6 @@ module.exports = class Action {
                 }    
             }).catch(err=>{
                 logger.error(err);
-
             });             
         }
         catch(ex){
@@ -205,15 +205,6 @@ module.exports = class Action {
         .catch(function(ex) {
             logger.error(JSON.stringify(ex,null,4));           
         });
-    }
-
-    randomTransact(count){
-        try{            
-            this._unsafeTxHandler().randomTransact(count,logger);
-        }
-        catch(ex){
-            logger.error(ex);
-        }
     }
 
     loadAccounts(){
@@ -328,8 +319,7 @@ module.exports = class Action {
         }
     }
 
-    callFunction(contract_name,function_name,parameters_list){
-        
+    callFunction(contract_name,function_name,parameters_list){     
         try{
             this._functionHandler().callFunction(this._Config.burrow_url,contract_name,function_name,parameters_list);
         }
@@ -428,7 +418,6 @@ module.exports = class Action {
     }
 
     importKeys(file_name){
-
         let burrow_files = "";        
 
         if(os.type == "Linux")
@@ -478,3 +467,4 @@ module.exports = class Action {
         });
     }
 };
+
