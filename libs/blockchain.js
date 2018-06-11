@@ -1,72 +1,95 @@
 'use strict'
 
 var burrowDbFactory = require('burrow-db');
+var Promise         = require('promise');
+var blockChain;
 
+module.exports = class Blockchain{
 
-class Blockchain{
-
-    constructor(burrowURL){
-
-        this.burrowUrl = burrowURL;
-        let burrow = burrowDbFactory.createInstance(this.burrowUrl);
-        this.blockChain = burrow.blockchain();
-    }
-
-    callBack(error,data){
-
-        if(data){
-            let str = JSON.stringify(data,null,4);                
-            console.log(str);
-        }    
-        else{
-            console.log(error);   
-        }            
+    constructor(connectionUrl){
+        
+        let burrow = burrowDbFactory.createInstance(connectionUrl);
+        blockChain = burrow.blockchain();
     }
 
     getGenesisHash(){
-
-        this.blockChain.getChainId((error,data)=>{
-            if(data){                           
-                console.log(" \n Genesis Hash = " + data.GenesisHash);
-            }    
-            else{
-                console.log(error);   
-            } 
+        
+        return new Promise(function (resolve, reject) {
+            blockChain.getChainId((error,data)=>{
+                if(data){                                               
+                    resolve(data.GenesisHash);
+                }    
+                else{
+                    reject(error);   
+                } 
+            })
         });
     }
 
-    getChainId(){
-
-        this.blockChain.getChainId(this.callBack);
+    getChainId(){        
+        return new Promise(function (resolve, reject) {
+            blockChain.getChainId((error,data)=>{
+                if(data){                                               
+                    resolve(data.ChainId);
+                }    
+                else{
+                    reject(error);   
+                } 
+            })
+        });
     }
         
-    getInfo(){
-        
-        this.blockChain.getInfo(this.callBack);
+    getInfo(){                
+        return new Promise(function (resolve, reject) {
+            blockChain.getInfo((error,data)=>{
+                if(data){                                               
+                    resolve(data);
+                }    
+                else{
+                    reject(error);   
+                } 
+            })
+        });
     }
     
-    getLatestBlockHeight(){
-        
-        this.blockChain.getLatestBlock((error,data)=>{
-            if(data){                           
-                console.log(" \n Latest Block Height = " + data.Block.header.height);
-            }    
-            else{
-                console.log(error);   
-            } 
+    getLatestBlockHeight(){        
+        return new Promise(function (resolve, reject) {
+            blockChain.getLatestBlock((error,data)=>{
+                if(data){                                               
+                    resolve(data.Block.header.height);
+                }    
+                else{
+                    reject(error);   
+                } 
+            })
         });
     }
     
     getLatestBlock(){
+        return new Promise(function (resolve, reject) {
+            blockChain.getLatestBlock((error,data)=>{
+                if(data){                                               
+                    resolve(data);
+                }    
+                else{
+                    reject(error);   
+                } 
+            })
+        });
         
-        this.blockChain.getLatestBlock(this.callBack);
     }
 
-    getBlock(height){
-        this.blockChain.getBlock(height , this.callBack);
+    getBlock(height){        
+        return new Promise(function (resolve, reject) {
+            blockChain.getBlock(height,(error,data)=>{
+                if(data){                                               
+                    resolve(data);
+                }    
+                else{
+                    reject(error);   
+                } 
+            })
+        });
     }
 
 }
-
-
-module.exports = Blockchain;

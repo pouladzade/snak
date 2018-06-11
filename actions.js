@@ -1,168 +1,322 @@
 
 'use strict'
 
-var os = require('os');
+var os     = require('os');
+var Logger = require('./libs/logger');
+var logger = new Logger();
 
-class Action {
+module.exports = class Action {
 
     constructor(config){
 
         if(config == undefined){
-            this.Config = {
+            this._Config = {
                 config_name:"config.json",
                 burrow_url:"http://localhost:1337/rpc",
                 burrow_path:"$HOME/burrow"
             }
         }
-        else
-            this.Config = config;
+        else{
+            this._Config = config;
+        }
+        
+        this._blockchain = null;
+        this._unsafeTx   = null;
+        this._sendTx     = null;
+        this._callTx     = null;
+        this._bondTx     = null;
+        this._unbondTx   = null;
+        this._accounts   = null;
+        this._compile    = null;
+        this._project    = null;
+        this._functions  = null;        
+    } 
 
-        let Blockchain = require("./libs/blockchain");
-        this.blockchain = new Blockchain(this.Config.burrow_url);
+    _unsafeTxHandler(){
+        if (this._unsafeTx != null){
+            return this._unsafeTx;
+        }
+        else{
+            let Unsafe = require("./libs/transactions/unsafe");
+            this._unsafeTx = new Unsafe(this._Config.burrow_url);
+            return this._unsafeTx;
+        }
+    }     
 
-        let Transaction = require("./libs/transaction");
-        this.transaction = new Transaction(this.Config.burrow_url);
+    _sendTxHandler(){
+        if (this._sendTx != null){
+            return this._sendTx;
+        }
+        else{
+            let SendTx = require("./libs/transactions/send");
+            this._sendTx = new SendTx(this._Config.burrow_url);
+            return this._sendTx;
+        }
+    } 
 
-    }    
+    _callTxHandler(){
+        if (this._callTx != null){
+            return this._callTx;
+        }
+        else{
+            let CallTx = require("./libs/transactions/call");
+            this._callTx = new CallTx(this._Config.burrow_url);
+            return this._callTx;
+        }
+    } 
+
+    _bondTxHandler(){
+        if (this._bondTx != null){
+            return this._bondTx;
+        }
+        else{
+            let BondTx = require("./libs/transactions/bond");
+            this._bondTx = new BondTx(this._Config.burrow_url);
+            return this._bondTx;
+        }
+    } 
+
+    _unbondTxHandler(){
+        if (this._unbondTx != null){
+            return this._unbondTx;
+        }
+        else{
+            let UnbondTx = require("./libs/transactions/unbond");
+            this._unbondTx = new UnbondTx(this._Config.burrow_url);
+            return this._unbondTx;
+        }
+    } 
+
+    _accountHandler(){
+        if (this._accounts != null){
+            return this._accounts;
+        }
+        else{
+            let Accounts = require("./libs/accounts") ;
+            this._accounts = new Accounts(this._Config.burrow_url);
+            return this._accounts;
+        }
+    } 
+
+    _compileHandler(){
+        if (this._compile != null){
+            return this._compile;
+        }
+        else{
+            let Compile  = require("./libs/compile");
+            this._compile = new Compile();
+            return this._compile;
+        }
+    } 
+
+    _projectHandler(){
+        if (this._project != null){
+            return this._project;
+        }
+        else{
+            let Project  = require("./libs/project");
+            this._project = new Project();    
+            return this._project;
+        }
+    } 
+
+    _blockchainHandler(){
+        if (this._blockchain != null){
+            return this._blockchain;
+        }
+        else{
+            let Blockchain = require("./libs/blockchain");
+            this._blockchain = new Blockchain(this._Config.burrow_url);
+            return this._blockchain;
+        }
+    }   
+
+    _deployHandler(){
+        if(this.deploy != null){
+            return this.deploy;
+        }            
+        else{
+            let Deploy  = require("./libs/deploy");
+            this.deploy = new Deploy(this._Config.burrow_url);
+            return this.deploy;
+        }         
+    }
+
+    _functionHandler(){
+        if(this._functions != null){
+            return this._functions;
+        }            
+        else{
+            let Functions  = require("./libs/functions");
+            this._functions = new Functions();
+            return this._functions;
+        }         
+    }
 
     getConfig(){        
         try{            
-            console.log(JSON.stringify(this.Config,null,4));            
+            logger.console(JSON.stringify(this._Config,null,4));            
         }
         catch(ex){
-            console.log(ex);
+            logger.error(ex);
         }
     }
 
-    compile(){
-        try{
-            
-            let compile = require("./libs/compile");  
-            compile();
-            
+    compileAll(){
+        try{                        
+            this._compileHandler().compileAll();            
         }
         catch(ex){
-            console.log(ex);
+            logger.error(ex);
         }
     }
 
-    migrate( accountname){
-        try{
-            let deployAll = require("./libs/deploy");    
+    migrate( accountName){
+        try{             
             let Link = require("./libs/link");  
             let linker = new Link();   
-            let burrow_url = this.Config.burrow_url;
+            var _this  = this;
             linker.getDeployOrder().then(function(linkOrder){
                 let bytecode;            
                 try{
-                    deployAll(burrow_url,linkOrder, accountname);               
+                    _this._deployHandler().deployAll(linkOrder, accountName);               
                 }
                 catch(ex)
                 {
-                    console.log(ex);
+                    logger.error(ex);
                 }    
             }).catch(err=>{
-                console.log(err);
+                logger.error(err);
 
             });             
         }
         catch(ex){
-            console.log(ex);
+            logger.error(ex);
         }
     }
     
-    transact(priv_key,data,address,fee,gas_limit){
-        try{            
-            this.transaction.Transact(priv_key,data,address,fee,gas_limit);
-        }
-        catch(ex){
-            console.log(ex);
-        }
+    transact(privateKey,data,address,fee,gasLimit,unsafe){   
+        if(unsafe === true){
+            this._unsafeTxHandler().transact(privateKey,data,address,fee,gasLimit).then(data => {
+                logger.console(JSON.stringify(data,null,4));
+            })
+            .catch(function(ex) {
+                logger.error(JSON.stringify(ex,null,4));           
+            });
+        }   
+        else{
+            this.broadcastCall(privateKey,data,address,fee,gasLimit);
+        }          
     }
 
-    send(priv_key,address,fee){
-        try{            
-            this.transaction.Send(priv_key,address,fee);
-        }
-        catch(ex){
-            console.log(ex);
-        }
+    send(privateKey,address,amount,unsafe){   
+        if(unsafe === true){
+            this._unsafeTxHandler().send(privateKey,address,amount).then(data => {
+                logger.console(JSON.stringify(data,null,4));
+            })
+            .catch(function(ex) {
+                logger.error(JSON.stringify(ex,null,4));           
+            });
+        } 
+        else{
+            this.broadcastSend(privateKey,address,amount);
+        }    
     }
 
-    bond(priv_key,address,amount,fee,pubKey){
-        try{            
-            this.transaction.Bond(priv_key,address,amount,fee,pubKey);
-        }
-        catch(ex){
-            console.log(ex);
-        }
+    bond(privateKey,address,amount,fee,pubKey,unsafe){                 
+        if(unsafe === true){
+            this._unsafeTxHandler().bond(privateKey,address,amount,fee,pubKey).then(data => {
+                logger.console(JSON.stringify(data,null,4));
+            })
+            .catch(function(ex) {
+                logger.error(JSON.stringify(ex,null,4));           
+            });
+        } 
+        else{
+            this.broadcastBond(privateKey,address,amount,fee,pubKey);
+        } 
     }
 
-    unbond(priv_key,address,amount,fee){
-        try{            
-            this.transaction.Unbond(priv_key,address,amount,fee);
-        }
-        catch(ex){
-            console.log(ex);
-        }
+    unbond(privateKey,address,amount,fee,unsafe){                          
+        if(unsafe === true){
+            this._unsafeTxHandler().unbond(privateKey,address,amount,fee).then(data => {
+                logger.console(JSON.stringify(data,null,4));
+            })
+            .catch(function(ex) {
+                logger.error(JSON.stringify(ex,null,4));           
+            });
+        } 
+        else{
+            this.broadcastUnbond(privateKey,address,amount,fee);
+        } 
     }
 
     randomTransact(count){
         try{            
-            this.transaction.randomTransact(count);
+            this._unsafeTxHandler().randomTransact(count,logger);
         }
         catch(ex){
-            console.log(ex);
+            logger.error(ex);
         }
     }
 
     loadAccounts(){
-        try{
-            const loadAccounts = require("./libs/accounts").loadAccounts;
-            loadAccounts(this.Config.burrow_url);
-        }
-        catch(ex){
-            console.log(ex);
-        }
+        this._accountHandler().loadAccounts()
+        .then(accounts => {
+            logger.console("accounts :\n" + JSON.stringify(accounts,null,4));
+        })
+        .catch(ex => {
+            logger.error(ex);
+        });
     }
 
     getDefaultAccounts(){
-        try{
-            const getDefaultAccounts = require("./libs/accounts").getDefaultAccounts;
-            getDefaultAccounts();
-        }
-        catch(ex){
-            console.log(ex);
-        }
+        this._accountHandler().getDefaultAccounts()
+        .then(accounts => {
+            logger.console("Default accounts :\n" + JSON.stringify(accounts,null,4));
+        })
+        .catch(function(ex) {
+            logger.error(ex);           
+        });
     }
 
-    createAccount(pass_phrase){
-        try{
-            const createAccount = require("./libs/accounts").createAccount;
-            createAccount(this.Config.burrow_url , pass_phrase);
-        }
-        catch(ex){
-            console.log(ex);
-        }
+    createAccount(passPhrase){
+        this._accountHandler().createAccount(passPhrase)
+        .then(account => {
+            logger.console("Account :\n" + JSON.stringify(account,null,4));
+        })
+        .catch(function(ex) {
+            logger.error(ex);           
+        });
     }
 
-    getBalance(address){
-        try{
-            const getBalance = require("./libs/accounts").getBalance;
-            getBalance(this.Config.burrow_url , address);
-        }
-        catch(ex){
-            console.log(ex);
-        }
+    getBalance(address,cmd){
+        console.log(cmd);
+        this._accountHandler().getBalance( address)
+        .then(balance => {
+            logger.console("Balance : " + balance);
+        })
+        .catch(function(ex) {
+            logger.error(ex);           
+        });
+    }
+
+    getSequence(address){
+        this._accountHandler().getSequence( address)
+        .then(sequence => {
+            logger.console("Sequence : " + sequence);
+        })
+        .catch(function(ex) {
+            logger.error(ex);           
+        });
     }
 
     init(){
-        try{
-            const projectSchema = require("./libs/init.js").ProjectSchema;        
-            projectSchema.createSchema();
+        try{             
+            this._projectHandler().createSchema();
         }
         catch(ex){
-            console.log(ex);
+            logger.error(ex);
         }
     }
 
@@ -176,7 +330,7 @@ class Action {
             
         }
         catch(ex){
-            console.log(ex);       
+            logger.error(ex);       
         }
     }
 
@@ -189,7 +343,7 @@ class Action {
         else if (os.type == "Darwin")
             burrow_files = '/burrow/burrow-darwin';              
         else{
-            console.log("snak does not support your OS type: " + os.type);
+            logger.console("snak does not support your OS type: " + os.type);
             return;
         }
         try{
@@ -201,7 +355,7 @@ class Action {
             
         }
         catch(ex){
-            console.log(ex);       
+            logger.error(ex);       
         }
     }
 
@@ -215,17 +369,17 @@ class Action {
             
         }
         catch(ex){
-            console.log(ex);       
+            logger.error(ex);       
         }
     }
 
     callFunction(contract_name,function_name,parameters_list){
-        let callFunc = require("./libs/functions").callFunction;
+        
         try{
-            callFunc(this.Config.burrow_url,contract_name,function_name,parameters_list);
+            this._functionHandler().callFunction(this._Config.burrow_url,contract_name,function_name,parameters_list);
         }
         catch(ex){
-            console.log(ex);   
+            logger.error(ex);   
         }
     }
 
@@ -238,7 +392,7 @@ class Action {
         else if (os.type == "Darwin")
             burrow_files = '/burrow/burrow-darwin';              
         else{
-            console.log("snak does not support your OS type: " + os.type);
+            logger.console("snak does not support your OS type: " + os.type);
             return;
         }
         try{
@@ -254,63 +408,68 @@ class Action {
             });            
         }
         catch(ex){
-            console.log(ex);       
+            logger.error(ex);       
         }
     }
 
     getChainId(){
-        try{            
-            this.blockchain.getChainId();
-        }
-        catch(ex){
-            console.log(ex);
-        }
+        this._blockchainHandler().getChainId()
+        .then(chainId => {
+            logger.console("Chain ID :\n" + JSON.stringify(chainId,null,4));
+        })
+        .catch(ex => {
+            logger.error(ex);
+        });
     }
     
     getGenesisHash(){
-        try{
-            this.blockchain.getGenesisHash();
-        }
-        catch(ex){
-            console.log(ex);
-        }
+        this._blockchainHandler().getGenesisHash()
+        .then(genesisHash => {
+            logger.console("Genesis Hash :\n" + genesisHash);
+        })
+        .catch(ex => {
+            logger.error(ex);
+        });
     }
 
-
     getInfo(){
-        try{            
-            this.blockchain.getInfo();
-        }
-        catch(ex){
-            console.log(ex);
-        }
+        this._blockchainHandler().getInfo()
+        .then(info => {
+            logger.console("info block :\n" +  JSON.stringify(info,null,4));
+        })
+        .catch(ex => {
+            logger.error(ex);
+        });
     }
 
     getLatestBlock(){
-        try{            
-            this.blockchain.getLatestBlock();
-        }
-        catch(ex){
-            console.log(ex);
-        }
+        this._blockchainHandler().getLatestBlock()
+        .then(block => {
+            logger.console("Latest block :\n" + JSON.stringify(block,null,4));
+        })
+        .catch(ex => {
+            logger.error(ex);
+        });
     }
     
-    getLatestBlockHeight(){
-        try{            
-            this.blockchain.getLatestBlockHeight();
-        }
-        catch(ex){
-            console.log(ex);
-        }
+    getLatestBlockHeight(){          
+        this._blockchainHandler().getLatestBlockHeight()
+        .then(latestBlockHeight => {
+            logger.console("Ltest block height :" + latestBlockHeight);
+        })
+        .catch(ex => {
+            logger.error(ex);
+        });
     }
 
     getBlock(height){
-        try{            
-            this.blockchain.getBlock(height);
-        }
-        catch(ex){
-            console.log(ex);
-        }
+        this._blockchainHandler().getBlock(height)
+        .then(block => {
+            logger.console("block :\n" + JSON.stringify(block,null,4));
+        })
+        .catch(ex => {
+            logger.error(ex);
+        });
     }
 
     importKeys(file_name){
@@ -322,7 +481,7 @@ class Action {
         else if (os.type == "Darwin")
             burrow_files = '/burrow/burrow-darwin';              
         else{
-            console.log("snak does not support your OS type: " + os.type);
+            logger.error("snak does not support your OS type: " + os.type);
             return;
         }
 
@@ -339,15 +498,44 @@ class Action {
                     });            
                 }
                 catch(ex){
-                    console.log(ex);       
+                    logger.error(ex);       
                 }
             });
         }
         else{
-            console.log("Error : Couldn't find the file " + file_name);
+            logger.error("Couldn't find the file " + file_name);
         }
     }
+
+    broadcastSend(privKey,address,amount){                
+        this._sendTxHandler().broadcast(privKey,address,amount).then(data =>{
+            logger.console("Safe Send Tx result :\n" + JSON.stringify(data,null,4));
+        }).catch(ex => {
+            logger.error(ex);
+        });
+    }
+
+    broadcastCall(privKey,address,gasLimit,fee,data){                
+        this._callTxHandler().broadcast(privKey,address,gasLimit,fee,data).then(data =>{
+            logger.console("Safe Transact Tx result :\n" + JSON.stringify(data,null,4));
+        }).catch(ex => {
+            logger.error(ex);
+        });
+    }
+
+    broadcastBond(privKey,address,amount,fee,pubKey){                
+        this._bondTxHandler().broadcast(privKey,address,amount,fee,pubKey).then(data =>{
+            logger.console("Safe Bond Tx result :\n" + JSON.stringify(data,null,4));
+        }).catch(ex => {
+            logger.error(ex);
+        });
+    }
+
+    broadcastUnbond(privKey,address,amount,fee){                
+        this._unbondTxHandler().broadcast(privKey,address,amount,fee).then(data =>{
+            logger.console("Safe Unbond Tx result :\n" + JSON.stringify(data,null,4));
+        }).catch(ex => {
+            logger.error(ex);
+        });
+    }
 };
-
-module.exports = Action;
-

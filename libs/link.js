@@ -1,16 +1,23 @@
 'use strict'
-var promise = require("promise");
-const TopologicalSort = require('topological-sort');
-const schema = require('./init').Schema;
-var projectSchema = require("./init").ProjectSchema;
-var fs = require('fs');
 
-var LinkOrder = function(linkOrder,contractName, dependencies) {
-    this.linkOrder    = linkOrder;
-    this.contractName = contractName;
-    this.dependencies = dependencies;
-    this.address      = "";
-    this.byteCodeHash = "";
+var promise             = require("promise");
+const TopologicalSort   = require('topological-sort');
+const schema            = require('./schema').Schema;
+var Project             = require("./project");
+var fs                  = require('fs');
+
+let project = new Project();
+
+class LinkOrder {
+
+    constructor(linkOrder,contractName, dependencies){
+        this.linkOrder    = linkOrder;
+        this.contractName = contractName;
+        this.dependencies = dependencies;
+        this.address      = "";
+        this.byteCodeHash = "";
+    }
+
 }
 
 module.exports = class Linker {
@@ -21,7 +28,7 @@ module.exports = class Linker {
         var contractNames= [];        
         var contractArtifacts;
         const nodes = new Map();
-        projectSchema.getContractsNames().then(function(contractNames){    
+        project.getContractsNames().then(function(contractNames){    
             try{
                 for(let i=0 ; i< contractNames.length ; i++){
                     let contract = contractNames[i];  
