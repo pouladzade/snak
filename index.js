@@ -19,7 +19,7 @@ catch(ex){
   console.log(ex);
 }
 
-  var actions = new Actions(config);
+var actions = new Actions(config);
 
   program
   .version('0.0.1')
@@ -37,9 +37,7 @@ catch(ex){
   .alias('cmp')
   .description('\nCompile all contracts in contracts folder and makes artifacts in the build folder\
   \nyou need to initialize a project before using this command.\n\n')
-  .action(() => {
-    actions.compile();
-  });
+  .action(() => actions.compileAll());
 
   program
   .command('migrate [accountname] ')
@@ -77,37 +75,51 @@ catch(ex){
   .action((address) => actions.getBalance(address));
 
   program
+  .command('sequence <address>')
+  .alias('blnc')
+  .description("\nGet sequence of a specefic account\
+  \nNo need to initialize a project before using this command.\n\n")
+  .action((address) => actions.getSequence(address));
+
+  program
   .command('transact <priv_key> <data> <address> <fee> <gas_limit>')
   .alias('tx')
-  .description('\nDo regular transaction to a contract, you need pass the private key of sender and address of contract\
+  .description('\n(Unsafe!) Do regular transaction to a contract, you need pass the private key of sender and address of contract\
   \nyou need to initialize a project before using this command.\n\n')
   .action((priv_key,data,address,fee,gas_limit) => actions.transact(priv_key,data,address,fee,gas_limit));
 
   program
   .command('bond <priv_key> <address> <amount> <fee> <public_key>')
   .alias('bnd')
-  .description('\nDo Bond transaction, you need pass the private key of sender and address of reciever\
+  .description('\n(Unsafe!) Do Bond transaction, you need pass the private key of sender and address of reciever\
   \nyou may need to initialize a project before using this command.\n\n')
   .action((priv_key,address,amount,fee,public_key) => actions.bond(priv_key,address,parseInt(amount),parseInt(fee),public_key));
 
   program
   .command('unbond <priv_key> <address> <amount> <fee>')
   .alias('ubnd')
-  .description('\nDo Unbond transaction, you need pass the private key of sender and address of reciever\
+  .description('\n(Unsafe!) Do Unbond transaction, you need pass the private key of sender and address of reciever\
   \nyou may need to initialize a project before using this command.\n\n')
   .action((priv_key,address,amount,fee,public_key) => actions.unbond(priv_key,address,parseInt(amount),parseInt(fee)));
 
   program
-  .command('send <priv_key> <address> <fee> ')
+  .command('send <priv_key> <address> <amount> ')
   .alias('snd')
-  .description('\nDo regular transaction, you need pass the private key of sender and address of reciever\
+  .description('\n(Unsafe!) Do regular transaction, you need pass the private key of sender and address of reciever\
   \nyou need to initialize a project before using this command.\n\n')
-  .action((priv_key,address,fee) => actions.send(priv_key,address,parseInt(fee)));
+  .action((priv_key,address,amount) => actions.send(priv_key,address,parseInt(amount)));
+
+  program
+  .command('broadcast_send <priv_key> <address> <amount> ')
+  .alias('snd')
+  .description('\n(safe) Do regular transaction, you need pass the private key of sender and address of reciever\
+  \nyou need to initialize a project before using this command.\n\n')
+  .action((priv_key,address,amount) => actions.send(priv_key,address,parseInt(amount)));
 
   program
   .command('random_transact <count>')
   .alias('rtx')
-  .description("\nDoing random Transaction, \
+  .description("\n(Unsafe!)Doing random Transaction, \
   \nyou need to initialize a project before using this command\
   \nyou should put a list of accounts(name = account_list.json) in accounts folder first!.\n\n")
   .action((count) => actions.randomTransact(count));
