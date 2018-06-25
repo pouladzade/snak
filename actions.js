@@ -155,7 +155,8 @@ module.exports = class Action {
 
     getConfig(){        
         try{            
-            logger.console(JSON.stringify(this._Config,null,4));            
+            logger.console(JSON.stringify(this._Config,null,4));
+            return this._Config;         
         }
         catch(ex){
             logger.error(ex);
@@ -338,9 +339,9 @@ module.exports = class Action {
 
         let burrow_files = "";        
 
-        if(os.type == "Linux")
+        if(os.type === "Linux")
             burrow_files = '/burrow/burrow-linux';
-        else if (os.type == "Darwin")
+        else if (os.type === "Darwin")
             burrow_files = '/burrow/burrow-darwin';              
         else{
             logger.console("snak does not support your OS type: " + os.type);
@@ -387,9 +388,9 @@ module.exports = class Action {
 
         let burrow_files = "";        
 
-        if(os.type == "Linux")
+        if(os.type === "Linux")
             burrow_files = '/burrow/burrow-linux';
-        else if (os.type == "Darwin")
+        else if (os.type === "Darwin")
             burrow_files = '/burrow/burrow-darwin';              
         else{
             logger.console("snak does not support your OS type: " + os.type);
@@ -408,12 +409,13 @@ module.exports = class Action {
             });            
         }
         catch(ex){
-            logger.error(ex);       
+            logger.error(ex);
+            throw ex;                   
         }
     }
 
     getChainId(){
-        this._blockchainHandler().getChainId()
+        return this._blockchainHandler().getChainId()
         .then(chainId => {
             logger.console("Chain ID :\n" + JSON.stringify(chainId,null,4));
         })
@@ -423,7 +425,7 @@ module.exports = class Action {
     }
     
     getGenesisHash(){
-        this._blockchainHandler().getGenesisHash()
+        return this._blockchainHandler().getGenesisHash()
         .then(genesisHash => {
             logger.console("Genesis Hash :\n" + genesisHash);
         })
@@ -433,7 +435,7 @@ module.exports = class Action {
     }
 
     getInfo(){
-        this._blockchainHandler().getInfo()
+        return this._blockchainHandler().getInfo()
         .then(info => {
             logger.console("info block :\n" +  JSON.stringify(info,null,4));
         })
@@ -443,7 +445,7 @@ module.exports = class Action {
     }
 
     getLatestBlock(){
-        this._blockchainHandler().getLatestBlock()
+        return this._blockchainHandler().getLatestBlock()
         .then(block => {
             logger.console("Latest block :\n" + JSON.stringify(block,null,4));
         })
@@ -453,7 +455,7 @@ module.exports = class Action {
     }
     
     getLatestBlockHeight(){          
-        this._blockchainHandler().getLatestBlockHeight()
+        return this._blockchainHandler().getLatestBlockHeight()
         .then(latestBlockHeight => {
             logger.console("Ltest block height :" + latestBlockHeight);
         })
@@ -463,7 +465,7 @@ module.exports = class Action {
     }
 
     getBlock(height){
-        this._blockchainHandler().getBlock(height)
+        return this._blockchainHandler().getBlock(height)
         .then(block => {
             logger.console("block :\n" + JSON.stringify(block,null,4));
         })
@@ -508,7 +510,7 @@ module.exports = class Action {
     }
 
     broadcastSend(privKey,address,amount){                
-        this._sendTxHandler().broadcast(privKey,address,amount).then(data =>{
+        return this._sendTxHandler().broadcast(privKey,address,amount).then(data =>{
             logger.console("Safe Send Tx result :\n" + JSON.stringify(data,null,4));
         }).catch(ex => {
             logger.error(ex);
@@ -516,7 +518,7 @@ module.exports = class Action {
     }
 
     broadcastCall(privKey,address,gasLimit,fee,data){                
-        this._callTxHandler().broadcast(privKey,address,gasLimit,fee,data).then(data =>{
+        return this._callTxHandler().broadcast(privKey,address,gasLimit,fee,data).then(data =>{
             logger.console("Safe Transact Tx result :\n" + JSON.stringify(data,null,4));
         }).catch(ex => {
             logger.error(ex);
@@ -524,7 +526,7 @@ module.exports = class Action {
     }
 
     broadcastBond(privKey,address,amount,fee,pubKey){                
-        this._bondTxHandler().broadcast(privKey,address,amount,fee,pubKey).then(data =>{
+        return this._bondTxHandler().broadcast(privKey,address,amount,fee,pubKey).then(data =>{
             logger.console("Safe Bond Tx result :\n" + JSON.stringify(data,null,4));
         }).catch(ex => {
             logger.error(ex);
@@ -532,7 +534,7 @@ module.exports = class Action {
     }
 
     broadcastUnbond(privKey,address,amount,fee){                
-        this._unbondTxHandler().broadcast(privKey,address,amount,fee).then(data =>{
+        return this._unbondTxHandler().broadcast(privKey,address,amount,fee).then(data =>{
             logger.console("Safe Unbond Tx result :\n" + JSON.stringify(data,null,4));
         }).catch(ex => {
             logger.error(ex);

@@ -10,7 +10,7 @@
   "dependencies": {
     "md5": "2.2.1",
     "topological-sort": "0.1.5",
-    "burrow-contracts": "0.16.9",
+    "burrow-contracts": "0.17.0",
     "burrow-db": "0.16.4",
     "commander": "^2.9.0",
     "promise": "8.0.1",

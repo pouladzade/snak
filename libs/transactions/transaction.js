@@ -15,20 +15,9 @@ module.exports = class Transaction {
     }
 
     sign(privKey,tx){                
-        
-        console.log(tx);
+                
         let signature = this._tenderKeys.sign(privKey,tx);
-
         return signature.toString("hex");
-    }
-
-    _transactCallb(error,data){
-        if(error){
-            console.log(error);
-        }
-        else{
-            console.log(JSON.stringify(data,null,4));
-        }
     }
 
     generateAccount(privateKey) {
