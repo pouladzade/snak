@@ -1,12 +1,13 @@
 
 'use strict'
 
+console.log("deploy.js");
 let contracts   = require('burrow-contracts');
 var fs          = require('fs');
 const schema    = require('./schema').Schema; 
 var Linker      = require('./link');
 var md5         = require('md5');
-
+console.log("deploy.js");
 var Link            = new Linker();
 let project_path    = schema.project_path; 
 let counter         = 0;
@@ -50,6 +51,7 @@ module.exports = class Deploy{
     
     deployAll(link_order,account_name) {
         try{  
+            console.log("deployAll");
             let account_path;
             let link_order_path = schema.project_path + schema.build + schema.link_order_file;
             if (fs.existsSync(link_order_path)) {
@@ -64,6 +66,7 @@ module.exports = class Deploy{
             this._deploy();    
         }
         catch(ex){
+            console.log("deploy Ex");
             console.log(ex);
             throw ex;
         }

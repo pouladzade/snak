@@ -21,6 +21,8 @@ catch(ex){
 
 var actions = new Actions(config);
 
+// actions.callFunction("Calculator","Mul","1,2");
+
   program
   .version('0.0.1')
   .description('Burrow deployment tools');
