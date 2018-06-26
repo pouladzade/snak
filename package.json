@@ -1,6 +1,6 @@
 {
   "name": "snak",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Tooling for interacting with Hyperledger Burrow",
   "main": "index.js",
   "author": "Ahmad Pouladzadeh <pouladzade@gmail.com>",
@@ -8,8 +8,8 @@
   "preferGlobal": true,
   "bin": "./index.js",
   "dependencies": {
-    "burrow-contracts": "0.17.0",
-    "burrow-db": "0.16.4",
+    "burrow-contracts": "0.18.0",
+    "burrow-db": "0.18.0",
     "commander": "^2.9.0",    
     "md5": "2.2.1",
     "promise": "8.0.1",
