@@ -1,13 +1,13 @@
 
 'use strict'
 
-console.log("deploy.js");
+
 let contracts   = require('burrow-contracts');
 var fs          = require('fs');
 const schema    = require('./schema').Schema; 
 var Linker      = require('./link');
 var md5         = require('md5');
-console.log("deploy.js");
+
 var Link            = new Linker();
 let project_path    = schema.project_path; 
 let counter         = 0;
@@ -49,9 +49,8 @@ module.exports = class Deploy{
     
     }
     
-    deployAll(link_order,account_name) {
-        try{  
-            console.log("deployAll");
+    deployAll(link_order,account_name,isForce) {
+        try{              
             let account_path;
             let link_order_path = schema.project_path + schema.build + schema.link_order_file;
             if (fs.existsSync(link_order_path)) {
@@ -63,21 +62,20 @@ module.exports = class Deploy{
             else account_path =project_path + schema.accounts + '/' + accountName; 
     
             contractManager = contracts.newContractManagerDev(this.connectionUrl, JSON.parse(fs.readFileSync(account_path,'utf-8')));
-            this._deploy();    
+            this._deploy(isForce);    
         }
-        catch(ex){
-            console.log("deploy Ex");
+        catch(ex){            
             console.log(ex);
             throw ex;
         }
     }
     
-    _deploy(){
+    _deploy(isForce){
         try{        
             console.log(counter + 1 + ')' + this._createDependencyString() + '\n');
             let byte_code = Link.link(linkOrder[counter].contractName,linkOrder[counter].dependencies,linkOrder);
     
-            if(this._hasContractChanged(byte_code,linkOrder[counter].contractName)){
+            if(isForce || this._hasContractChanged(byte_code,linkOrder[counter].contractName)){
                 console.log( byte_code + '\n');
                 let contract_obj = JSON.parse(fs.readFileSync(project_path + schema.build + '/' + linkOrder[counter].contractName + '.json','utf-8'));    
                 let ContractFactory = contractManager.newContractFactory(contract_obj.abi);

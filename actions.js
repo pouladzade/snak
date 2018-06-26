@@ -172,15 +172,14 @@ module.exports = class Action {
         }
     }
 
-    migrate( accountName){
+    migrate( accountName,isForce){
         try{             
             let Link = require("./libs/link");  
             let linker = new Link();   
             var _this  = this;
-            linker.getDeployOrder().then(function(linkOrder){
-                let bytecode;            
+            linker.getDeployOrder().then(function(linkOrder){                           
                 try{
-                    _this._deployHandler().deployAll(linkOrder, accountName);               
+                    _this._deployHandler().deployAll(linkOrder, accountName,isForce);               
                 }
                 catch(ex)
                 {

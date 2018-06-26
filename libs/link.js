@@ -111,7 +111,7 @@ module.exports = class Linker {
 
     getContractAddress(contract_name,link_order){
         for(let i = 0 ; i < link_order.length ; i++){            
-            if(link_order[i].contractName == contract_name)
+            if(link_order[i].contractName === contract_name)
                 return link_order[i].address;        
         }
         console.log("[Error] : Can not find the contract in link order list  : " + contract_name); 
