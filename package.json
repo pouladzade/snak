@@ -1,6 +1,6 @@
 {
   "name": "snak",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tooling for interacting with Hyperledger Burrow",
   "main": "index.js",
   "author": "Ahmad Pouladzadeh <pouladzade@gmail.com>",
@@ -24,3 +24,4 @@
     "url": "https://github.com/pouladzade/snack.git"
   }
 }
+ 
