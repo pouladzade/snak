@@ -1,6 +1,6 @@
 'use strict'
 
-var os     = require('os');
+const os     = require('os');
 var Logger = require('./libs/logger');
 var logger = new Logger();
 
