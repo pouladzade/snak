@@ -1,6 +1,0 @@
-{
-	"config_name":"config.json",
-	"burrow_url":"http://192.168.0.10:1300/rpc",
-	"default_acc_Add":"",
-	"burrow_path":"$HOME/.burrow"
-}
