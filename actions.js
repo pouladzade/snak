@@ -343,7 +343,7 @@ module.exports = class Action {
         else if (os.type() == "Darwin")
             burrow_files = '/burrow/burrow-darwin';              
         else{
-            logger.console("snak does not support your OS : " + os.type());
+            logger.console("snak does not support your OS type: " + os.type());
             return;
         }
         try{
@@ -387,12 +387,12 @@ module.exports = class Action {
 
         let burrow_files = "";        
 
-        if(os.type == "Linux")
+        if(os.type() == "Linux")
             burrow_files = '/burrow/burrow-linux';
-        else if (os.type == "Darwin")
+        else if (os.type() == "Darwin")
             burrow_files = '/burrow/burrow-darwin';              
         else{
-            logger.console("snak does not support your OS type: " + os.type);
+            logger.console("snak does not support your OS type: " + os.type());
             return;
         }
         try{
@@ -476,12 +476,12 @@ module.exports = class Action {
 
         let burrow_files = "";        
 
-        if(os.type == "Linux")
+        if(os.type() == "Linux")
             burrow_files = '/burrow/burrow-linux';
-        else if (os.type == "Darwin")
+        else if (os.type() == "Darwin")
             burrow_files = '/burrow/burrow-darwin';              
         else{
-            logger.error("snak does not support your OS type: " + os.type);
+            logger.error("snak does not support your OS type: " + os.type());
             return;
         }
 
