@@ -71,4 +71,4 @@ build/
 migration/
 transactions/
 contracts/
-config.json
+./config.json
