@@ -1,6 +1,6 @@
 {
   "name": "snak",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Tooling for interacting with Hyperledger Burrow",
   "main": "index.js",
   "author": "Ahmad Pouladzadeh <pouladzade@gmail.com>",
