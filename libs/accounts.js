@@ -119,20 +119,20 @@ module.exports = class Accounts {
 
     getDefaultAccounts(){
         return new Promise(function (resolve, reject) {
-                try{  
-                    let filePath = path.normalize(__dirname + schema.template + schema.account_list);      
-                    if (fs.existsSync(filePath)) {
-                        let account_list = JSON.parse(fs.readFileSync(filePath, 'utf-8'));                                       
-                        resolve(account_list);
-                    }
-                    else{
-                        throw ('The file does not exist : \n' + filepath);
-                    }
-                }    
-                catch(ex){
-                    reject(ex);   
-                } 
-            });
+            try{  
+                let filePath = path.normalize(__dirname + schema.template + schema.account_list);      
+                if (fs.existsSync(filePath)) {
+                    let account_list = JSON.parse(fs.readFileSync(filePath, 'utf-8'));                                       
+                    resolve(account_list);
+                }
+                else{
+                    throw ('The file does not exist : \n' + filepath);
+                }
+            }    
+            catch(ex){
+                reject(ex);   
+            } 
+        });
     }
 
 }

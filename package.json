@@ -1,26 +1,27 @@
 {
   "name": "snak",
-  "version": "0.0.7",
-  "description": "Tiny tools for interacting with Burrow",
+  "version": "0.1.1",
+  "description": "Tooling for interacting with Hyperledger Burrow",
   "main": "index.js",
-  "author": "Ahmad Pouladzadeh",
+  "author": "Ahmad Pouladzadeh <pouladzade@gmail.com>",
   "license": "MIT",
   "preferGlobal": true,
   "bin": "./index.js",
   "dependencies": {
+    "burrow-contracts": "0.18.1",
+    "burrow-db": "0.18.1",
+    "commander": "^2.9.0",    
     "md5": "2.2.1",
-    "topological-sort": "0.1.5",
-    "burrow-contracts": "0.16.9",
-    "burrow-db": "0.16.4",
-    "commander": "^2.9.0",
     "promise": "8.0.1",
     "shelljs": "0.8.1",
+    "tenderkeys": "0.0.1",
+    "topological-sort": "0.1.5",
     "truffle-compile": "3.0.10",
-    "truffle-resolver": "4.0.1",
-    "tenderkeys": "0.0.1"
+    "truffle-resolver": "4.0.1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/pouladzade/snack.git"
   }
 }
+ 

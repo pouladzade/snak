@@ -92,4 +92,30 @@ module.exports = class Blockchain{
         });
     }
 
+    getBlockTxs(height){        
+        return new Promise(function (resolve, reject) {
+            blockChain.getBlockTransactions(height,(error,data)=>{
+                if(data){                                               
+                    resolve(data);
+                }    
+                else{
+                    reject(error);   
+                } 
+            })
+        });
+    }
+
+    getBlockTxsNo(height){        
+        return new Promise(function (resolve, reject) {
+            blockChain.getBlock(height,(error,data)=>{
+                if(data){                                               
+                    resolve(data.ResultBlock.block.header.num_txs);
+                }    
+                else{
+                    reject(error);   
+                } 
+            })
+        });
+    }
+
 }

@@ -5,20 +5,20 @@ const schema    = require('./schema').Schema;
 var fs          = require('fs');
 var promise     = require("promise");
 
+var methodCallBack = function (error, result) {
+    if (error) {
+        console.log("[Error]:\n" + error.toString());
+    }
+    else {
+        console.log(JSON.stringify(result,null,4));
+    }
+}
+
 module.exports = class Functions{
 
     constructor(){
         var Project = require("./project");
         this.project = new Project;
-    }
-
-    _methodCallBack(error, result) {
-        if (error) {
-            console.log("[Error]:\n" + error.toString());
-        }
-        else {
-            console.log(JSON.stringify(result,null,4));
-        }
     }
     
     _getContractAddress(contract_name) {
@@ -31,8 +31,9 @@ module.exports = class Functions{
     }
     
     _getMigrateObj(contract_name, function_name) {
+        let _this = this;
         return new promise(function (fulfil, reject) {
-            this.project.getContractsNames().then((contracts) => {
+            _this.project.getContractsNames().then((contracts) => {
                 try {
                     for (let i = 0; i < contracts.length; i++) {
                         if (contract_name == contracts[i]) {
@@ -71,10 +72,10 @@ module.exports = class Functions{
                     if (error) {
                         throw error;
                     }
-                    let contract_function = "contract." + function_name + "( " + input + ", this._methodCallBack " + " )";
+                    let contract_function = "contract." + function_name + "( " + input + ", methodCallBack " + " )";
     
-                    var Func =new Function ("contract", "_this._methodCallBack",contract_function);
-                    Func(contract,_this._methodCallBack);
+                    var Func =new Function ("contract", "methodCallBack",contract_function);
+                    Func(contract,methodCallBack);
                 });
             }
             catch (ex) {

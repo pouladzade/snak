@@ -21,7 +21,6 @@ catch(ex){
 
 var actions = new Actions(config);
 
-
   program
   .version('0.0.1')
   .description('Burrow deployment tools');
@@ -41,10 +40,11 @@ var actions = new Actions(config);
 
   program
   .command('migrate [accountname] ')
+  .option('-f, --force', 'forcely migrate the contracts')
   .alias('mgt')
   .description('\ndeploy contract on the Burrow\
   \nyou need to initialize a project before using this command.\n\n')
-  .action((accountname) => actions.migrate(accountname));
+  .action((accountname,cmd) => actions.migrate(accountname,cmd.force));
 
   program
   .command('list_accounts ')
@@ -150,7 +150,7 @@ var actions = new Actions(config);
   });
 
   program
-  .command('call <contract_name> <function_name> <parameters_list>')
+  .command('call <contract_name> <function_name> [parameters_list]')
   .alias('calf')
   .description("\nCalls the function of specefic contract, you need to pass the list of parameters like this var1,var2,...,varK ,comma separated, \
   \nYou need to initialize a project before using this command.\n\n")
@@ -211,6 +211,13 @@ var actions = new Actions(config);
   .description("\nGet the specific Block of the blockchain\
   \nYou may need to initialize a project before using this command.\n\n")
   .action((block_height) => actions.getBlock(parseInt(block_height)));
+
+  program
+  .command('list_transactions  <block_height>')
+  .alias('ltxs')
+  .description("\nGet transactions of the specific Block \
+  \nYou may need to initialize a project before using this command.\n\n")
+  .action((block_height) => actions.getBlockTxs(parseInt(block_height)));
 
   program
   .command('config')

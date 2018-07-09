@@ -62,4 +62,12 @@ typings/
 
 package-lock.json
 
+
+# Snak project folders
 .vscode/
+test/
+accounts/
+build/
+migration/
+transactions/
+contracts/
