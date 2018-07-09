@@ -30,6 +30,7 @@ module.exports = class Action {
         this._compile    = null;
         this._project    = null;
         this._functions  = null;        
+        this._test       = null;
     } 
 
     _unsafeTxHandler(){
@@ -153,6 +154,17 @@ module.exports = class Action {
         }         
     }
 
+    _testHandler(){
+        if(this._test != null){
+            return this._test;
+        }
+        else{
+            let Test  = require("./libs/test");
+            this._test = new Test();
+            return this._test;
+        }
+    }
+
     getConfig(){        
         try{            
             logger.console(JSON.stringify(this._Config,null,4));
@@ -189,6 +201,15 @@ module.exports = class Action {
                 logger.error(err);
 
             });             
+        }
+        catch(ex){
+            logger.error(ex);
+        }
+    }
+
+    testAll() {
+        try {
+            this._testHandler().testAll();
         }
         catch(ex){
             logger.error(ex);
