@@ -494,6 +494,28 @@ module.exports = class Action {
         });
     }
 
+    getBlockTxs(height){
+        return this._blockchainHandler().getBlockTxs(height)
+        .then(txs => {
+            logger.console("block :\n" + JSON.stringify(txs,null,4));
+            return txs;
+        })
+        .catch(ex => {
+            logger.error(ex);
+        });
+    }
+
+    getBlockTxsNo(height){
+        return this._blockchainHandler().getBlockTxsNo(height)
+        .then(txNo => {
+            return ({txNo:txNo,height:height});
+            //logger.console("Tx Number :\n" + JSON.stringify(block,null,4));
+        })
+        .catch(ex => {
+            logger.error(ex);
+        });
+    }
+
     importKeys(file_name){
 
         let burrow_files = "";        
@@ -559,5 +581,18 @@ module.exports = class Action {
         }).catch(ex => {
             logger.error(ex);
         });
+    }
+
+    getChainTxs(from,to){
+        var _this = this;
+        for(var i = from ; i< to ; i++){
+            this.getBlockTxsNo(i).then((data) => {
+                console.log("No " + data.height + " ) " + data.txNo);
+                if(data.txNo > 0 )
+                _this.getBlockTxs(data.height).then(txs => {
+                    console.log(data.height + ") \n" + JSON.stringify(txs,null,4));
+                });
+            });
+        }
     }
 };

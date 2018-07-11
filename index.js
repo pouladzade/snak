@@ -213,6 +213,13 @@ var actions = new Actions(config);
   .action((block_height) => actions.getBlock(parseInt(block_height)));
 
   program
+  .command('list_transactions  <block_height>')
+  .alias('ltxs')
+  .description("\nGet transactions of the specific Block \
+  \nYou may need to initialize a project before using this command.\n\n")
+  .action((block_height) => actions.getBlockTxs(parseInt(block_height)));
+
+  program
   .command('config')
   .alias('conf')
   .description("\nGet the current config of the snak\
@@ -229,3 +236,4 @@ var actions = new Actions(config);
   .action(() => actions.testAll());
   
 program.parse(process.argv);
+
