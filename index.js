@@ -227,5 +227,13 @@ var actions = new Actions(config);
   \nYou may need to initialize a project before using this command.\n\n")
   .action(() => actions.getConfig());
 
-
+  program
+  .command('test')
+  .alias('t')
+  .description("\n run the testscripts to test the functionalities of contracts\
+  \n you need to initialize a project before using this command.\n\n\
+  \n snak test integrates mocha and chai for testing\n\n")
+  .action(() => actions.testAll());
+  
 program.parse(process.argv);
+

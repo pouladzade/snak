@@ -88,4 +88,28 @@ module.exports = class Project {
 
         });       
     }
+
+    listTestFiles() {
+        return new Promise(function(fulfil,reject){
+            var dir = require("node-dir");
+            var path = require("path");
+            try {
+                let dirPath = Schema.project_path +Schema.test;
+                dir.files(dirPath, function(err,files){
+                    if(err) reject(err);
+
+                    files = files.filter(function(file){
+                        return path.extname(file) == ".js" && path.basename(file)[0] != ".";
+                    });
+
+                    if(files.length ==0)
+                        reject("There are no files in this directory")
+
+                    fulfil(files);
+                })
+            } catch (ex) {
+                reject(ex);
+            }
+        })
+    }
 }

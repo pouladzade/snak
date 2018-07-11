@@ -1,0 +1,19 @@
+{
+  "name": "test-utils",
+  "version": "1.0.0",
+  "description": "Utils for snak test",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pouladzade/snack.git#readme"
+  },
+  "author": "Toniya Sundaram",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pouladzade/snack/issues"
+  },
+  "homepage": "https://github.com/pouladzade/snack/tree/readme#readme"
+}
