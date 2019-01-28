@@ -8,9 +8,10 @@
   "preferGlobal": true,
   "bin": "./index.js",
   "dependencies": {
+    "@monax/burrow": "0.23.0",
     "burrow-contracts": "0.18.1",
-    "burrow-db": "0.18.1",
-    "commander": "^2.9.0",    
+    "burrow-rpcinfo": "0.0.1",
+    "commander": "^2.9.0",
     "md5": "2.2.1",
     "promise": "8.0.1",
     "shelljs": "0.8.1",
@@ -24,4 +25,3 @@
     "url": "https://github.com/pouladzade/snack.git"
   }
 }
- 

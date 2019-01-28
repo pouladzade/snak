@@ -15,6 +15,4 @@ function isRunning {
 isRunning burrow
 
 cd $HOME/burrow
-
-./monax-keys server &
-./burrow start 
+./burrow start --validator-index=0

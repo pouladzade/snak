@@ -29,7 +29,7 @@ fi
 
 # copying burrow's stuffs
 mkdir $BURRUW_INSTALL_FILES_DIR
-cp -r $BURRUW_FILES_DIR/* $BURRUW_INSTALL_FILES_DIR/
+cp -R $BURRUW_FILES_DIR/. $BURRUW_INSTALL_FILES_DIR/
 
 
 echo Finished!

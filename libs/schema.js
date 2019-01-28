@@ -2,36 +2,35 @@
 
 var Schema = {
 
-    project_path : process.cwd(),
+  project_path: process.cwd(),
 
-    snack_path : __dirname,
+  snack_path: __dirname,
 
-    test : "/test",
+  test: '/test',
 
-    contracts : "/contracts",
+  contracts: '/contracts',
 
-    migration : "/migration",
+  migration: '/migration',
 
-    migration_output:"/migration_output_",
+  migration_output: '/migration_output_',
 
-    build : "/build",
+  build: '/build',
 
-    accounts : "/accounts",
+  accounts: '/accounts',
 
-    account_list: "/account_list.json",
+  account_list: '/account_list.json',
 
-    default_account: "/account.json",
+  default_account: '/account.json',
 
-    transactions: "/transactions",
+  transactions: '/transactions',
 
-    random_transactions: "/random_transactions.json",
+  random_transactions: '/random_transactions.json',
 
-    template: "/templates",
+  template: '/templates',
 
-    config_file : "/config.json",
-    
-    link_order_file: "/link_order.json"   
+  config_file: '/config.json',
+
+  link_order_file: '/link_order.json'
 }
 
-
-module.exports = {Schema};
+module.exports = { Schema }

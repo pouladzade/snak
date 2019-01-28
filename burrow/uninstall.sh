@@ -10,7 +10,7 @@ echo uninstalling burrow ....
 # we create a folder named burrow-backup and put the burrow old files in it
 # if already existed
 if [ -d "$BURRUW_INSTALL_FILES_DIR" ]; then
-    rm -r $BURRUW_INSTALL_FILES_DIR
+    rm -R $BURRUW_INSTALL_FILES_DIR
 fi
 
 
