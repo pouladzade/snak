@@ -146,13 +146,13 @@ module.exports = class Accounts {
   getDefaultAccounts() {
     return new Promise(function (resolve, reject) {
       try {
-        let filePath = path.normalize(__dirname + schema.template + schema.account_list)
-        if (fs.existsSync(filePath)) {
-          let account_list = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-          resolve(account_list)
-        } else {
-          throw ('The file does not exist : \n' + filepath)
-        }
+        let filePath = process.env.HOME + "/burrow/.keys/data";
+        console.log('Key files path: \n' + filePath)
+        fs.readdir(filePath, function(err, items) {               
+          for (var i=0; i<items.length; i++) {
+              console.log(fs.readFileSync(filePath+'/'+items[i], 'utf8'));
+          }
+      });
       } catch (ex) {
         reject(ex)
       }

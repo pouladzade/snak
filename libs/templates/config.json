@@ -1,5 +1,13 @@
 {
-	"config_name":"config.json",
-	"burrow_url":"http://localhost:1337/rpc",
-	"burrow_path":"$HOME/burrow"
+
+	"rpc":{
+		"info":"http://localhost:1337/rpc",
+		"grpc":"127.0.0.1:10997",
+		"metrics":"tcp://127.0.0.1:9102",
+		"profiler":"tcp://127.0.0.1:6060"
+	},
+
+	"burrow_path":"$HOME/burrow",
+	
+	"default_account":""
 }

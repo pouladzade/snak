@@ -22,8 +22,6 @@ module.exports = class Project {
         fs.mkdirSync(Schema.project_path + Schema.test)
         fs.mkdirSync(Schema.project_path + Schema.accounts)
         fs.mkdirSync(Schema.project_path + Schema.transactions)
-        fs.copyFileSync(Schema.snack_path + Schema.template + Schema.account_list, Schema.project_path + Schema.accounts + Schema.account_list)
-        fs.copyFileSync(Schema.snack_path + Schema.template + Schema.default_account, Schema.project_path + Schema.accounts + Schema.default_account)
 
         fulfil()
       } catch (ex) {

@@ -9,9 +9,17 @@ module.exports = class Action {
   constructor (config) {
     if (config == undefined) {
       this._Config = {
-        config_name: 'config.json',
-        rpcInfoUrl: 'http://127.0.0.1:30002',
-        burrow_path: '$HOME/burrow'
+
+        rpc:{
+          info:"http://localhost:1337/rpc",
+          grpc:"127.0.0.1:10997",
+          metrics:"tcp://127.0.0.1:9102",
+          profiler:"tcp://127.0.0.1:6060"
+        },
+      
+        burrow_path:"$HOME/burrow",
+        
+        default_account:""
       }
     } else {
       this._Config = config
@@ -34,7 +42,7 @@ module.exports = class Action {
       return this._unsafeTx
     } else {
       let Unsafe = require('./libs/transactions/unsafe')
-      this._unsafeTx = new Unsafe(this._Config.burrow_url)
+      this._unsafeTx = new Unsafe(this._Config.rpc.grpc)
       return this._unsafeTx
     }
   }
@@ -44,7 +52,7 @@ module.exports = class Action {
       return this._sendTx
     } else {
       let SendTx = require('./libs/transactions/send')
-      this._sendTx = new SendTx(this._Config.burrow_url)
+      this._sendTx = new SendTx(this._Config.rpc.grpc)
       return this._sendTx
     }
   }
@@ -54,7 +62,7 @@ module.exports = class Action {
       return this._callTx
     } else {
       let CallTx = require('./libs/transactions/call')
-      this._callTx = new CallTx(this._Config.burrow_url)
+      this._callTx = new CallTx(this._Config.rpc.grpc)
       return this._callTx
     }
   }
@@ -64,7 +72,7 @@ module.exports = class Action {
       return this._bondTx
     } else {
       let BondTx = require('./libs/transactions/bond')
-      this._bondTx = new BondTx(this._Config.burrow_url)
+      this._bondTx = new BondTx(this._Config.rpc.grpc)
       return this._bondTx
     }
   }
@@ -74,7 +82,7 @@ module.exports = class Action {
       return this._unbondTx
     } else {
       let UnbondTx = require('./libs/transactions/unbond')
-      this._unbondTx = new UnbondTx(this._Config.burrow_url)
+      this._unbondTx = new UnbondTx(this._Config.rpc.grpc)
       return this._unbondTx
     }
   }
@@ -84,7 +92,7 @@ module.exports = class Action {
       return this._accounts
     } else {
       let Accounts = require('./libs/accounts')
-      this._accounts = new Accounts(this._Config.burrow_url)
+      this._accounts = new Accounts(this._Config.rpc.info)
       return this._accounts
     }
   }
@@ -114,7 +122,7 @@ module.exports = class Action {
       return this._blockchain
     } else {
       let Blockchain = require('./libs/blockchain')
-      this._blockchain = new Blockchain(this._Config.burrow_url)
+      this._blockchain = new Blockchain(this._Config.rpc.info)
       return this._blockchain
     }
   }
@@ -124,7 +132,7 @@ module.exports = class Action {
       return this.deploy
     } else {
       let Deploy = require('./libs/deploy')
-      this.deploy = new Deploy(this._Config.burrow_url)
+      this.deploy = new Deploy(this._Config.rpc.grpc)
       return this.deploy
     }
   }
@@ -306,7 +314,7 @@ module.exports = class Action {
   burrow () {
     try {
       let shell = require('shelljs')
-      let cmd = __dirname + '/burrow/burrow.sh'
+      let cmd = __dirname + '/binaries/burrow.sh'
       let child = shell.exec(cmd, { async: true })
       child.stdout.on('data', function (data) {
       })
@@ -316,15 +324,15 @@ module.exports = class Action {
   }
 
   installBurrow () {
-    let burrow_files = ''
+    let osType = os.type().toLowerCase()
 
-    if (os.type() === 'Linux') { burrow_files = '/burrow/burrow-linux' } else if (os.type() === 'Darwin') { burrow_files = '/burrow/burrow-darwin' } else {
+    if (osType !== 'linux' && osType !== 'darwin') {
       logger.console('snak does not support your OS type: ' + os.type())
       return
     }
     try {
       let shell = require('shelljs')
-      let cmd = __dirname + '/burrow/install.sh ' + __dirname + burrow_files
+      let cmd = __dirname + '/binaries/install.sh ' + osType
       let child = shell.exec(cmd, { async: true })
       child.stdout.on('data', function (data) {
       })
@@ -336,7 +344,7 @@ module.exports = class Action {
   uninstallBurrow () {
     try {
       let shell = require('shelljs')
-      let cmd = __dirname + '/burrow/uninstall.sh'
+      let cmd = __dirname + '/binaries/uninstall.sh'
       let child = shell.exec(cmd, { async: true })
       child.stdout.on('data', function (data) {
       })
@@ -350,27 +358,6 @@ module.exports = class Action {
       this._functionHandler().callFunction(this._Config.burrow_url, contract_name, function_name, parameters_list)
     } catch (ex) {
       logger.error(ex)
-    }
-  }
-
-  runMonaxKeys (ip_address) {
-    let burrow_files = ''
-
-    if (os.type() === 'Linux') { burrow_files = '/burrow/burrow-linux' } else if (os.type() === 'Darwin') { burrow_files = '/burrow/burrow-darwin' } else {
-      logger.console('snak does not support your OS type: ' + os.type())
-      return
-    }
-    try {
-      let shell = require('shelljs')
-      let cmd = ''
-      if (ip_address == '') { cmd = __dirname + burrow_files + '/monax-keys server &' } else { cmd = __dirname + burrow_files + '/monax-keys --host ' + ip_address + ' server &' }
-
-      let child = shell.exec(cmd, { async: true })
-      child.stdout.on('data', function (data) {
-      })
-    } catch (ex) {
-      logger.error(ex)
-      throw ex
     }
   }
 
@@ -474,33 +461,6 @@ module.exports = class Action {
       .catch(ex => {
         logger.error(ex)
       })
-  }
-
-  importKeys (file_name) {
-    let burrow_files = ''
-
-    if (os.type() == 'Linux') { burrow_files = '/burrow/burrow-linux' } else if (os.type() == 'Darwin') { burrow_files = '/burrow/burrow-darwin' } else {
-      logger.error('snak does not support your OS type: ' + os.type())
-      return
-    }
-
-    let fs = require('fs')
-    if (fs.existsSync(file_name)) {
-      let keys = JSON.parse(fs.readFileSync(file_name, 'utf-8'))
-      keys.forEach(element => {
-        try {
-          let shell = require('shelljs')
-          let cmd = __dirname + burrow_files + '/monax-keys import ' + element.privKey + ' --no-pass'
-          let child = shell.exec(cmd, { async: true })
-          child.stdout.on('data', function (data) {
-          })
-        } catch (ex) {
-          logger.error(ex)
-        }
-      })
-    } else {
-      logger.error("Couldn't find the file " + file_name)
-    }
   }
 
   broadcastSend (privKey, address, amount) {

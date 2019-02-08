@@ -17,16 +17,15 @@ try {
   console.log(ex)
 }
 
-console.log(JSON.stringify(js,null,4))
 var actions = new Actions(config)
 
 program
-  .version('0.0.1')
-  .description('Burrow deployment tools')
+  .version('0.1.1')
+  .description('Hyperledger Burrow deployment tools')
 
 program
-  .command('init')
-  .alias('int')
+  .command('initialize')
+  .alias('init')
   .description('\nInitialize project, makes folders and files which are needed for starting a dapp project.\n\n')
   .action(() => actions.init())
 
@@ -47,21 +46,21 @@ program
 
 program
   .command('list_accounts ')
-  .alias('lacnt')
+  .alias('lsacc')
   .description('\nLoad all accounts\
   \nyou need to initialize a project before using this command.\n\n')
   .action(() => actions.loadAccounts())
 
 program
   .command('default_accounts ')
-  .alias('dacnt')
+  .alias('defacc')
   .description('\nList all predefined accounts\
   \nNo need to initialize a project before using this command.\n\n')
   .action(() => actions.getDefaultAccounts())
 
 program
   .command('create_account <pass_phrase>')
-  .alias('crtac')
+  .alias('crtacc')
   .description('\nCreates unsafe account included private key, public key and address and displays on the terminal, \
   \nNo need to initialize a project before using this command.\n\n')
   .action((pass_phrase) => actions.createAccount(pass_phrase))
@@ -75,7 +74,7 @@ program
 
 program
   .command('sequence <address>')
-  .alias('blnc')
+  .alias('seq')
   .description('\nGet sequence of a specefic account\
   \nNo need to initialize a project before using this command.\n\n')
   .action((address) => actions.getSequence(address))
@@ -107,7 +106,7 @@ program
 program
   .command('send <priv_key> <address> <amount> ')
   .option('-u, --unsafe', 'unsafe sending transaction')
-  .alias('snd')
+  .alias('stx')
   .description('\n(safe) Do regular transaction, you need pass the private key of sender and address of reciever\
   \nyou need to initialize a project before using this command.\n\n')
   .action((priv_key, address, amount, cmd) => actions.send(priv_key, address, parseInt(amount), cmd.unsafe))
@@ -121,8 +120,8 @@ program
   .action((count) => actions.randomTransact(count))
 
 program
-  .command('install_burrow')
-  .alias('insl')
+  .command('install')
+  .alias('inst')
   .description('\ninstall burrow blockchain, and copy the files to the home directory (.burrow), \
   \nNo need to initialize project for this command.\n\n')
   .action(() => actions.installBurrow())
@@ -135,8 +134,8 @@ program
   .action(() => actions.uninstallBurrow())
 
 program
-  .command('run_burrow')
-  .alias('rnbrw')
+  .command('run')
+  .alias('rn')
   .description('\nrun burrow blockchain,you need install burrow first!, \
   \nNo need to initialize project for this command.\n\n')
   .action(() => actions.burrow())
@@ -150,24 +149,10 @@ program
 
 program
   .command('call <contract_name> <function_name> [parameters_list]')
-  .alias('calf')
+  .alias('cltx')
   .description('\nCalls the function of specefic contract, you need to pass the list of parameters like this var1,var2,...,varK ,comma separated, \
   \nYou need to initialize a project before using this command.\n\n')
   .action((contract_name, function_name, parameters_list) => actions.callFunction(contract_name, function_name, parameters_list))
-
-program
-  .command('run_monax_keys [ip_address]')
-  .alias('rks')
-  .description('\nRuns the Monax key server on port 4776, \
-  \nNo need to initialize a project before using this command.\n\n')
-  .action((ip_address) => actions.runMonaxKeys(ip_address))
-
-program
-  .command('import_keys <file_name>')
-  .alias('imks')
-  .description('\nImport keys in the monax key server\
-  \nNo need to initialize a project before using this command.\n\n')
-  .action((file_name) => actions.importKeys(file_name))
 
 program
   .command('chain_id')
@@ -213,22 +198,22 @@ program
 
   program
   .command('consensus')
-  .alias('cons')
+  .alias('cns')
   .description('\nGet consensus status of the blockchain\
   \nYou may need to initialize a project before using this command.\n\n')
   .action(() => actions.getConsensusInfo())
 
 
   program
-  .command('account <acc>')
-  .alias('acc')
+  .command('account_info <acc>')
+  .alias('accinf')
   .description('\nGet account information \
   \nYou may need to initialize a project before using this command.\n\n')
   .action((acc) => actions.getAccountInfo(acc))
 
   program
   .command('block  <block_height>')
-  .alias('blck')
+  .alias('blk')
   .description('\nGet the specific Block of the blockchain\
   \nYou may need to initialize a project before using this command.\n\n')
   .action((block_height) => actions.getBlock(parseInt(block_height)))
@@ -242,7 +227,7 @@ program
 
 program
   .command('config')
-  .alias('conf')
+  .alias('cnf')
   .description("\nGet the current config of the snak\
   \nIf you haven't created any project burrow url will be http://127.0.0.1:1337/rpc by default\
   \nYou may need to initialize a project before using this command.\n\n")
